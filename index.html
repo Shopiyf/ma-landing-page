@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moodigital | Architectes du Digital</title>
+    <title>Moodigital | Agence Créative</title>
+    <meta name="description" content="Agence digitale spécialisée en branding, design et développement web.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. CONFIGURATION --- */
         :root {
-            --bg: #050505;
-            --surface: #0f0f0f;
+            --bg: #030303;
             --text: #ffffff;
-            --text-dim: #888888;
-            --accent: #7928CA;
-            --accent-2: #FF0080;
-            --gradient: linear-gradient(135deg, var(--accent), var(--accent-2));
+            --text-dim: #9ca3af;
+            --accent: #8b5cf6;
             --font: 'Space Grotesk', sans-serif;
-            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+            --easing: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* Smooth Scroll Fixes */
-        html.lenis { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto; }
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -37,406 +34,350 @@
             font-family: var(--font);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
-        a { text-decoration: none; color: inherit; }
+        body.loaded { opacity: 1; }
+
+        a { text-decoration: none; color: inherit; cursor: pointer; }
         ul { list-style: none; }
         img { width: 100%; display: block; object-fit: cover; }
 
-        /* --- 2. COMPONENTS --- */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9000;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+        .preloader-text {
+            font-size: 2rem;
+            font-weight: 700;
+            overflow: hidden;
+        }
+        .preloader-text span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+
         .container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 0 5vw;
+            padding: 0 20px;
         }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 15px 40px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 100px;
-            font-weight: 500;
+            padding: 12px 30px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 0.9rem;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s var(--easing);
             z-index: 1;
+            display: inline-block;
         }
-        
-        .btn::before {
+        .btn::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 0%; height: 100%;
-            background: var(--text);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff;
             z-index: -1;
-            transition: width 0.4s var(--easing);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s var(--easing);
         }
+        .btn:hover { color: #000; border-color: #fff; }
+        .btn:hover::after { transform: scaleX(1); transform-origin: left; }
 
-        .btn:hover { color: var(--bg); border-color: var(--text); }
-        .btn:hover::before { width: 100%; }
-
-        .section-title {
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 2rem;
-            line-height: 1;
-        }
-
-        /* --- 3. HEADER --- */
         header {
             position: fixed;
-            top: 0; left: 0; right: 0;
-            padding: 20px 0;
+            top: 0; left: 0; width: 100%;
+            padding: 25px 0;
             z-index: 100;
-            mix-blend-mode: difference; /* Rend le texte visible sur fond blanc ou noir */
+            mix-blend-mode: difference;
         }
-        
-        .nav-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -1px; }
 
-        .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; }
-
-        /* --- 4. HERO SECTION --- */
         .hero {
             height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
-            padding-top: 80px;
+            padding-top: 60px;
         }
-
-        .hero-bg-glow {
+        
+        .hero-blob {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 80vw; height: 80vw;
-            background: radial-gradient(circle, rgba(121,40,202,0.1) 0%, rgba(5,5,5,0) 70%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, var(--accent) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
+            opacity: 0.2;
             z-index: -1;
-            pointer-events: none;
+            animation: pulseBlob 8s infinite alternate;
         }
 
-        .hero h1 {
-            font-size: clamp(3.5rem, 9vw, 9rem);
-            line-height: 0.9;
+        @keyframes pulseBlob {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
+            100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.3; }
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 9rem);
+            line-height: 0.95;
             font-weight: 700;
-            letter-spacing: -0.04em;
-            margin-bottom: 30px;
-        }
-
-        .hero-line { overflow: hidden; display: block; }
-        .hero-text { display: block; transform: translateY(100%); } /* Init animation state */
-
-        .hero-sub {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            max-width: 500px;
-            margin-bottom: 50px;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        /* --- 5. MARQUEE (TEXT DEFILANT) --- */
-        .marquee-section {
-            padding: 100px 0;
-            background: var(--text);
-            color: var(--bg);
-            overflow: hidden;
-            transform: rotate(-2deg) scale(1.1);
-        }
-
-        .marquee-content {
-            display: flex;
-            white-space: nowrap;
-            font-size: 4rem;
-            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
             text-transform: uppercase;
         }
-        
-        .marquee-item {
-            padding: 0 50px;
-            animation: moveLeft 20s linear infinite;
+
+        .line { overflow: hidden; display: block; }
+
+        .hero-desc {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-dim);
+            max-width: 600px;
+            line-height: 1.5;
+            margin-bottom: 3rem;
         }
 
-        @keyframes moveLeft {
-            from { transform: translateX(0); }
-            to { transform: translateX(-100%); }
+        .marquee-wrap {
+            padding: 6rem 0;
+            background: #fff;
+            color: #000;
+            overflow: hidden;
+            transform: skewY(-2deg);
         }
+        .marquee-inner {
+            display: flex;
+            white-space: nowrap;
+        }
+        .marquee-part {
+            font-size: 5vw;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding-right: 50px;
+            animation: moveMarquee 20s linear infinite;
+        }
+        @keyframes moveMarquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
-        /* --- 6. SERVICES (GRID) --- */
-        .services { padding: 150px 0; }
-        
-        .services-grid {
+        .work { padding: 10rem 0; }
+        .section-header { margin-bottom: 5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        .section-title { font-size: 3rem; text-transform: uppercase; }
+
+        .project {
+            margin-bottom: 10rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 60px;
-        }
-
-        .service-card {
-            background: var(--surface);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .service-card:hover { transform: translateY(-10px); background: #141414; }
-
-        .service-num { font-size: 0.9rem; color: var(--accent); margin-bottom: 20px; display: block; }
-        .service-card h3 { font-size: 2rem; margin-bottom: 15px; }
-        .service-card p { color: var(--text-dim); line-height: 1.5; }
-
-        /* --- 7. WORK / PROJECTS --- */
-        .work { padding: 100px 0; }
-        
-        .project-item {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            margin-bottom: 150px;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
             align-items: center;
         }
-
-        .project-img-wrapper {
-            height: 600px;
+        .project:nth-child(even) { direction: rtl; }
+        .project:nth-child(even) .project-info { direction: ltr; }
+        
+        .project-img-box {
+            height: 60vh;
             overflow: hidden;
-            border-radius: 30px;
+            border-radius: 8px;
+            position: relative;
         }
-
         .project-img {
-            width: 100%;
-            height: 110%; /* Pour l'effet parallaxe */
+            width: 100%; height: 120%;
             object-fit: cover;
         }
 
-        .project-info h2 { font-size: 3rem; margin-bottom: 20px; }
-        .project-tags { display: flex; gap: 10px; margin-bottom: 30px; }
-        .tag {
-            padding: 5px 15px;
-            border: 1px solid #333;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-
-        /* --- 8. CTA & FOOTER --- */
-        .cta-section {
+        .project-info h3 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .project-info p { color: var(--text-dim); margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6; }
+        
+        .footer-cta {
             height: 80vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            background: radial-gradient(circle at center, #1a0529 0%, #000 70%);
+            background: radial-gradient(circle at bottom, #1a1a1a 0%, #000 70%);
         }
-
-        .cta-title {
-            font-size: clamp(3rem, 7vw, 6rem);
+        .big-cta-text {
+            font-size: clamp(2rem, 6vw, 6rem);
             font-weight: 700;
-            margin-bottom: 40px;
-            background: linear-gradient(to right, #fff, #888);
+            background: linear-gradient(to top, #666, #fff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
         }
 
-        footer {
-            padding: 50px 0;
-            border-top: 1px solid #222;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 900px) {
-            .project-item { grid-template-columns: 1fr; gap: 30px; margin-bottom: 80px; }
-            .project-img-wrapper { height: 400px; }
-            .marquee-section { transform: rotate(0) scale(1); }
+        @media (max-width: 768px) {
+            .project { grid-template-columns: 1fr; gap: 2rem; direction: ltr !important; }
+            .project-img-box { height: 40vh; }
+            .marquee-wrap { transform: skewY(0); }
         }
     </style>
 </head>
 <body>
 
+    <div class="noise-overlay"></div>
+
+    <div class="preloader">
+        <div class="preloader-text">
+            <span>MOODIGITAL.</span>
+        </div>
+    </div>
+
     <header>
-        <div class="container nav-wrapper">
+        <div class="container nav-flex">
             <div class="logo">moodigital.</div>
-            <a href="mailto:hello@moodigital.com" class="btn">Parler de mon projet</a>
+            <a href="mailto:contact@moodigital.com" class="btn">Contact</a>
         </div>
     </header>
 
     <section class="hero">
-        <div class="hero-bg-glow"></div>
+        <div class="hero-blob"></div>
         <div class="container">
             <h1>
-                <span class="hero-line"><span class="hero-text">We create</span></span>
-                <span class="hero-line"><span class="hero-text" style="color: transparent; -webkit-text-stroke: 1px #fff;">Digital</span></span>
-                <span class="hero-line"><span class="hero-text">Emotions.</span></span>
+                <span class="line"><span class="word-anim">Crafting</span></span>
+                <span class="line"><span class="word-anim" style="color: transparent; -webkit-text-stroke: 1px #fff;">Digital</span></span>
+                <span class="line"><span class="word-anim">Dreams.</span></span>
             </h1>
-            <p class="hero-sub">L'agence créative qui fusionne esthétique et performance. Nous construisons les marques de demain.</p>
-            <div class="hero-cta" style="opacity: 0; transform: translateY(20px);">
-                <a href="#work" class="btn">Voir nos réalisations</a>
+            <p class="hero-desc anim-fade">
+                Agence créative fusionnant design stratégique et développement technique. 
+                Nous transformons votre vision en une expérience digitale inoubliable.
+            </p>
+            <div class="anim-fade">
+                <a href="#work" class="btn">Voir les projets</a>
             </div>
         </div>
     </section>
 
-    <section class="marquee-section">
-        <div class="marquee-content">
-            <div class="marquee-item">STRATÉGIE • BRANDING • DÉVELOPPEMENT • UI/UX DESIGN • MARKETING • </div>
-            <div class="marquee-item">STRATÉGIE • BRANDING • DÉVELOPPEMENT • UI/UX DESIGN • MARKETING • </div>
-            <div class="marquee-item">STRATÉGIE • BRANDING • DÉVELOPPEMENT • UI/UX DESIGN • MARKETING • </div>
-        </div>
-    </section>
-
-    <section class="services">
-        <div class="container">
-            <h2 class="section-title">Notre Expertise.</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <span class="service-num">01</span>
-                    <h3>Branding</h3>
-                    <p>Identité visuelle forte pour marquer les esprits. Logos, chartes graphiques et storytelling.</p>
-                </div>
-                <div class="service-card">
-                    <span class="service-num">02</span>
-                    <h3>Web Design</h3>
-                    <p>Interfaces immersives (UI) et expériences utilisateur (UX) fluides centrées sur la conversion.</p>
-                </div>
-                <div class="service-card">
-                    <span class="service-num">03</span>
-                    <h3>Développement</h3>
-                    <p>Code propre et performant. Shopify, Webflow ou solutions sur mesure comme celle-ci.</p>
-                </div>
-            </div>
+    <section class="marquee-wrap">
+        <div class="marquee-inner">
+            <div class="marquee-part">Design • Strategy • Webflow • Shopify • Branding • Development •&nbsp;</div>
+            <div class="marquee-part">Design • Strategy • Webflow • Shopify • Branding • Development •&nbsp;</div>
+            <div class="marquee-part">Design • Strategy • Webflow • Shopify • Branding • Development •&nbsp;</div>
         </div>
     </section>
 
     <section class="work" id="work">
         <div class="container">
-            <h2 class="section-title">Sélection.</h2>
+            <div class="section-header">
+                <h2 class="section-title">Sélection</h2>
+            </div>
 
-            <div class="project-item">
+            <div class="project">
                 <div class="project-info">
-                    <div class="project-tags">
-                        <span class="tag">E-Commerce</span>
-                        <span class="tag">Shopify</span>
-                    </div>
-                    <h2>Neon Athletics</h2>
-                    <p style="color: #888; margin-bottom: 30px;">Refonte complète d'une marque de sport. Augmentation de 150% du taux de conversion grâce à une expérience utilisateur simplifiée.</p>
+                    <h3>Aero Watch</h3>
+                    <p>Direction artistique et développement Shopify pour une marque de montres suisses. Focus sur l'expérience d'achat immersive.</p>
                     <a href="#" class="btn">Voir le cas</a>
                 </div>
-                <div class="project-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071&auto=format&fit=crop" alt="Projet Sport" class="project-img">
+                <div class="project-img-box">
+                    <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1988&auto=format&fit=crop" class="project-img" alt="Montre de luxe">
                 </div>
             </div>
 
-            <div class="project-item">
-                <div class="project-img-wrapper order-mobile-1"> <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop" alt="Projet Montre" class="project-img">
-                </div>
+            <div class="project">
                 <div class="project-info">
-                    <div class="project-tags">
-                        <span class="tag">Landing Page</span>
-                        <span class="tag">Luxe</span>
-                    </div>
-                    <h2>Chronos Elite</h2>
-                    <p style="color: #888; margin-bottom: 30px;">Lancement produit pour une montre connectée haut de gamme. Design minimaliste et animations 3D.</p>
+                    <h3>Velvet Interiors</h3>
+                    <p>Site vitrine minimaliste pour un studio d'architecture d'intérieur. Animations fluides et galerie photo interactive.</p>
                     <a href="#" class="btn">Voir le cas</a>
                 </div>
+                <div class="project-img-box">
+                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1974&auto=format&fit=crop" class="project-img" alt="Architecture">
+                </div>
             </div>
+
         </div>
     </section>
 
-    <section class="cta-section">
+    <section class="footer-cta">
         <div class="container">
-            <p style="color: var(--accent); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">Prêt à décoller ?</p>
-            <h2 class="cta-title">Créons quelque chose<br>d'extraordinaire.</h2>
-            <a href="mailto:hello@moodigital.com" class="btn" style="background: #fff; color: #000;">Démarrer un projet</a>
+            <p style="color: var(--accent); margin-bottom: 20px;">QU'ATTENDEZ-VOUS ?</p>
+            <h2 class="big-cta-text">Let's build<br>the future.</h2>
+            <a href="mailto:contact@moodigital.com" class="btn" style="background: white; color: black; border-color: white;">Lancer le projet</a>
+            <div style="margin-top: 50px; font-size: 0.8rem; color: #555;">© 2025 MOODIGITAL AGENCY.</div>
         </div>
     </section>
 
-    <footer class="container">
-        <div>Moodigital © 2025</div>
-        <div>Paris, France</div>
-        <div>
-            <a href="#" style="margin-left: 20px;">Instagram</a>
-            <a href="#" style="margin-left: 20px;">LinkedIn</a>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
 
     <script>
-        // 1. Initialisation du Smooth Scroll (Lenis)
+        gsap.registerPlugin(ScrollTrigger);
+
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
         });
-
         function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
 
-        // 2. Configuration GSAP
-        gsap.registerPlugin(ScrollTrigger);
+        window.addEventListener("load", () => {
+            
+            const tl = gsap.timeline();
 
-        // Animation Intro (Hero)
-        const tl = gsap.timeline();
-        
-        tl.to('.hero-text', {
-            y: 0,
-            duration: 1.5,
-            stagger: 0.2,
-            ease: "power4.out"
-        })
-        .to('.hero-sub', {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power2.out"
-        }, "-=1")
-        .to('.hero-cta', {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power2.out"
-        }, "-=0.8");
+            document.body.classList.add('loaded');
 
-        // Animation des Cartes Services (Apparition au scroll)
-        gsap.from(".service-card", {
-            scrollTrigger: {
-                trigger: ".services",
-                start: "top 80%",
-            },
-            y: 50,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.2,
-            ease: "power3.out"
+            tl.to(".preloader-text span", {
+                y: 0,
+                duration: 1,
+                ease: "power4.out"
+            })
+            .to(".preloader-text span", {
+                y: "-100%",
+                duration: 0.8,
+                delay: 0.5,
+                ease: "power4.in"
+            })
+            .to(".preloader", {
+                y: "-100%",
+                duration: 1,
+                ease: "power4.inOut"
+            }, "-=0.3")
+
+            .from(".word-anim", {
+                y: 150,
+                rotation: 5,
+                opacity: 0,
+                duration: 1.5,
+                stagger: 0.1,
+                ease: "power3.out"
+            }, "-=0.5")
+            .from(".anim-fade", {
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power2.out"
+            }, "-=1");
         });
 
-        // Animation Parallaxe Images Projets
-        document.querySelectorAll('.project-img-wrapper').forEach(wrapper => {
-            gsap.to(wrapper.querySelector('.project-img'), {
-                yPercent: -20, // L'image bouge à l'intérieur du cadre
+        document.querySelectorAll('.project-img-box').forEach(box => {
+            gsap.to(box.querySelector('img'), {
+                yPercent: -20,
                 ease: "none",
                 scrollTrigger: {
-                    trigger: wrapper,
+                    trigger: box,
                     start: "top bottom",
                     end: "bottom top",
                     scrub: true
@@ -444,16 +385,17 @@
             });
         });
 
-        // Animation CTA Final
-        gsap.from(".cta-title", {
-            scrollTrigger: {
-                trigger: ".cta-section",
-                start: "top 70%",
-            },
-            y: 50,
-            opacity: 0,
-            duration: 1.5,
-            ease: "power4.out"
+        document.querySelectorAll('.project').forEach(proj => {
+            gsap.from(proj, {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: proj,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
         });
 
     </script>
