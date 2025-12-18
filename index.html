@@ -1,403 +1,1118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moodigital | Agence Créative</title>
-    <meta name="description" content="Agence digitale spécialisée en branding, design et développement web.">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg: #030303;
-            --text: #ffffff;
-            --text-dim: #9ca3af;
-            --accent: #8b5cf6;
-            --font: 'Space Grotesk', sans-serif;
-            --easing: cubic-bezier(0.19, 1, 0.22, 1);
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
 
-        html.lenis, html.lenis body { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto !important; }
-        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-        .lenis.lenis-stopped { overflow: hidden; }
-        .lenis.lenis-scrolling iframe { pointer-events: none; }
+  <title>Lyvora | Landing page</title>
+  <meta name="description" content="Landing page premium, rapide et orientée conversion." />
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: var(--font);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
+  <style>
+    :root{
+      --bg:#070607;
+      --panel:#0f0f12;
+      --panel2:#131318;
+      --text:#f3f3f4;
+      --muted:#b3b3b8;
+      --stroke:rgba(255,255,255,.08);
+      --stroke2:rgba(255,255,255,.12);
+      --accent:#d9a441;
+      --accent2:#ffcc6a;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --radius: 22px;
+      --radius2: 28px;
+      --max: 1180px;
+    }
 
-        body.loaded { opacity: 1; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
 
-        a { text-decoration: none; color: inherit; cursor: pointer; }
-        ul { list-style: none; }
-        img { width: 100%; display: block; object-fit: cover; }
+    /* Background grid + amber glow (inspired vibe, original execution) */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      background:
+        radial-gradient(1200px 600px at 50% 10%, rgba(217,164,65,.18), transparent 55%),
+        radial-gradient(900px 520px at 10% 40%, rgba(217,164,65,.10), transparent 60%),
+        radial-gradient(900px 520px at 90% 40%, rgba(217,164,65,.10), transparent 60%),
+        linear-gradient(#060506, #070607);
+    }
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background:
+        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 84px 84px;
+      opacity:.10;
+      filter: blur(.2px);
+      mask-image: radial-gradient(700px 380px at 50% 30%, rgba(0,0,0,1) 35%, transparent 70%);
+    }
 
-        .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 9000;
-            opacity: 0.05;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
+    .container{max-width:var(--max); margin:0 auto; padding:0 22px}
 
-        .preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-        }
-        .preloader-text {
-            font-size: 2rem;
-            font-weight: 700;
-            overflow: hidden;
-        }
-        .preloader-text span {
-            display: inline-block;
-            transform: translateY(100%);
-        }
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:60;
+      height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      letter-spacing:.1px;
+      background: linear-gradient(90deg, rgba(217,164,65,.95), rgba(255,204,106,.95));
+      color:#1b1408;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .topbar strong{font-weight:800}
 
-        .container {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    header{
+      position:sticky;
+      top:44px;
+      z-index:50;
+      padding:16px 0;
+      background: linear-gradient(to bottom, rgba(7,6,7,.86), rgba(7,6,7,.25));
+      backdrop-filter: blur(10px);
+    }
 
-        .btn {
-            padding: 12px 30px;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            display: inline-block;
-        }
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff;
-            z-index: -1;
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.4s var(--easing);
-        }
-        .btn:hover { color: #000; border-color: #fff; }
-        .btn:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav{
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      gap:14px;
+    }
 
-        header {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
-            padding: 25px 0;
-            z-index: 100;
-            mix-blend-mode: difference;
-        }
-        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -1px; }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+    .brand-mark{
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      background: radial-gradient(circle at 30% 30%, var(--accent2), var(--accent));
+      box-shadow: 0 12px 40px rgba(217,164,65,.22);
+    }
+    .brand b{font-weight:850; letter-spacing:.2px}
+    .brand small{display:block; color:var(--muted); font-size:12px; margin-top:1px}
 
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            padding-top: 60px;
-        }
-        
-        .hero-blob {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px; height: 600px;
-            background: radial-gradient(circle, var(--accent) 0%, rgba(0,0,0,0) 70%);
-            filter: blur(80px);
-            opacity: 0.2;
-            z-index: -1;
-            animation: pulseBlob 8s infinite alternate;
-        }
+    .nav-pill{
+      display:flex;
+      gap:6px;
+      padding:6px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--stroke);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .nav-pill a{
+      color:rgba(243,243,244,.84);
+      text-decoration:none;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:999px;
+      transition: .18s ease;
+      outline:none;
+    }
+    .nav-pill a:hover{background: rgba(255,255,255,.06); color:var(--text)}
 
-        @keyframes pulseBlob {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
-            100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.3; }
-        }
+    .nav-right{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:12px;
+    }
 
-        h1 {
-            font-size: clamp(3rem, 8vw, 9rem);
-            line-height: 0.95;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-        }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      color:rgba(243,243,244,.88);
+      font-size:13px;
+      text-decoration:none;
+      transition: .18s ease;
+    }
+    .chip:hover{border-color:var(--stroke2); background: rgba(255,255,255,.07)}
 
-        .line { overflow: hidden; display: block; }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:14px;
+      font-weight:700;
+      text-decoration:none;
+      cursor:pointer;
+      transition: transform .14s ease, background .18s ease, border-color .18s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: var(--stroke2)}
+    .btn:active{transform: translateY(0)}
 
-        .hero-desc {
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            color: var(--text-dim);
-            max-width: 600px;
-            line-height: 1.5;
-            margin-bottom: 3rem;
-        }
+    .btn-primary{
+      border-color: rgba(217,164,65,.45);
+      background: linear-gradient(90deg, rgba(217,164,65,.98), rgba(255,204,106,.92));
+      color:#201607;
+      box-shadow: 0 18px 50px rgba(217,164,65,.20);
+    }
+    .btn-primary:hover{background: linear-gradient(90deg, rgba(255,204,106,.95), rgba(217,164,65,.95))}
 
-        .marquee-wrap {
-            padding: 6rem 0;
-            background: #fff;
-            color: #000;
-            overflow: hidden;
-            transform: skewY(-2deg);
-        }
-        .marquee-inner {
-            display: flex;
-            white-space: nowrap;
-        }
-        .marquee-part {
-            font-size: 5vw;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding-right: 50px;
-            animation: moveMarquee 20s linear infinite;
-        }
-        @keyframes moveMarquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+    main{padding-bottom:80px}
 
-        .work { padding: 10rem 0; }
-        .section-header { margin-bottom: 5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .section-title { font-size: 3rem; text-transform: uppercase; }
+    .hero{
+      padding:54px 0 28px;
+    }
 
-        .project {
-            margin-bottom: 10rem;
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 4rem;
-            align-items: center;
-        }
-        .project:nth-child(even) { direction: rtl; }
-        .project:nth-child(even) .project-info { direction: ltr; }
-        
-        .project-img-box {
-            height: 60vh;
-            overflow: hidden;
-            border-radius: 8px;
-            position: relative;
-        }
-        .project-img {
-            width: 100%; height: 120%;
-            object-fit: cover;
-        }
+    .hero-inner{
+      text-align:center;
+      position:relative;
+    }
 
-        .project-info h3 { font-size: 2.5rem; margin-bottom: 1rem; }
-        .project-info p { color: var(--text-dim); margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6; }
-        
-        .footer-cta {
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: radial-gradient(circle at bottom, #1a1a1a 0%, #000 70%);
-        }
-        .big-cta-text {
-            font-size: clamp(2rem, 6vw, 6rem);
-            font-weight: 700;
-            background: linear-gradient(to top, #666, #fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-        }
+    .badge-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
 
-        @media (max-width: 768px) {
-            .project { grid-template-columns: 1fr; gap: 2rem; direction: ltr !important; }
-            .project-img-box { height: 40vh; }
-            .marquee-wrap { transform: skewY(0); }
-        }
-    </style>
+    .avatar-stack{
+      display:flex;
+      align-items:center;
+      padding:10px 12px;
+      gap:10px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+    }
+
+    .avatars{display:flex; align-items:center}
+    .avatar{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      border:2px solid rgba(7,6,7,.95);
+      background: rgba(255,255,255,.12);
+      display:grid;
+      place-items:center;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.2px;
+      margin-left:-8px;
+      box-shadow: 0 12px 25px rgba(0,0,0,.32);
+    }
+    .avatar:first-child{margin-left:0}
+    .avatar:nth-child(1){background: rgba(255,204,106,.28)}
+    .avatar:nth-child(2){background: rgba(217,164,65,.22)}
+    .avatar:nth-child(3){background: rgba(255,255,255,.16)}
+    .avatar:nth-child(4){background: rgba(255,204,106,.18)}
+    .avatar:nth-child(5){background: rgba(217,164,65,.16)}
+
+    .badge-row .mini{
+      border-radius:999px;
+      padding:10px 12px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      color: rgba(243,243,244,.86);
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    h1{
+      font-size: clamp(36px, 4.5vw, 64px);
+      line-height: 1.02;
+      margin: 14px auto 14px;
+      max-width: 18ch;
+      letter-spacing: -.6px;
+    }
+
+    .sub{
+      margin: 0 auto;
+      max-width: 62ch;
+      color: rgba(243,243,244,.74);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .rating{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+    }
+    .rating .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      color: rgba(243,243,244,.85);
+      font-size:13px;
+    }
+    .stars{letter-spacing:1px; font-size:12px}
+
+    .cta-row{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .logos{
+      margin-top:26px;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:18px;
+      opacity:.82;
+    }
+    .logo{
+      font-weight:800;
+      letter-spacing:.3px;
+      color: rgba(243,243,244,.58);
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.03);
+    }
+
+    .section{
+      padding: 34px 0;
+    }
+
+    .panel{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .showcase{
+      margin-top:30px;
+    }
+
+    .showcase-inner{
+      position:relative;
+      padding: 26px;
+      border-radius: var(--radius2);
+      background:
+        radial-gradient(800px 320px at 50% 0%, rgba(217,164,65,.22), transparent 55%),
+        rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .device{
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      padding: 16px;
+      box-shadow: 0 26px 80px rgba(0,0,0,.55);
+    }
+
+    .device-grid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:16px;
+    }
+
+    .mock{
+      border-radius: 22px;
+      background: rgba(0,0,0,.42);
+      border: 1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+      position:relative;
+      min-height: 360px;
+    }
+    .mock::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(420px 220px at 30% 20%, rgba(255,204,106,.18), transparent 60%),
+        radial-gradient(460px 240px at 70% 60%, rgba(217,164,65,.14), transparent 65%),
+        linear-gradient(135deg, rgba(255,255,255,.06), transparent 55%);
+      opacity:.9;
+    }
+    .mock .label{
+      position:absolute;
+      left:18px;
+      top:18px;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(7,6,7,.55);
+      backdrop-filter: blur(10px);
+      color: rgba(243,243,244,.9);
+      font-size:13px;
+    }
+    .dot{width:10px; height:10px; border-radius:50%; background: linear-gradient(90deg, var(--accent2), var(--accent))}
+
+    .mock .hint{
+      position:absolute;
+      left:18px;
+      bottom:18px;
+      right:18px;
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(7,6,7,.52);
+      color: rgba(243,243,244,.78);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .side{
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.36);
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height: 360px;
+    }
+    .side h3{margin:0; font-size:16px; letter-spacing:-.2px}
+    .side p{margin:0; color: rgba(243,243,244,.72); font-size:13px; line-height:1.55}
+
+    .kpi{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top:4px;
+    }
+    .kpi .item{
+      padding:12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+    }
+    .kpi .item b{display:block; font-size:13px}
+    .kpi .item small{color: rgba(243,243,244,.62)}
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+
+    .card{
+      padding:18px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: radial-gradient(420px 220px at 20% 10%, rgba(255,204,106,.10), transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .card > *{position:relative}
+    .icon{
+      width:36px;
+      height:36px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color: rgba(243,243,244,.90);
+      font-weight:900;
+      margin-bottom:10px;
+    }
+    .card h3{margin:0 0 8px; font-size:16px; letter-spacing:-.2px}
+    .card p{margin:0 0 12px; color: rgba(243,243,244,.70); font-size:13px; line-height:1.55}
+
+    .section-title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+    .section-title h2{margin:0; font-size:28px; letter-spacing:-.4px}
+    .section-title p{margin:0; color: rgba(243,243,244,.70); max-width:62ch; line-height:1.55; font-size:14px}
+
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .step{
+      padding:18px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      position:relative;
+      overflow:hidden;
+    }
+    .step .n{
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:-.8px;
+      color: rgba(255,204,106,.92);
+    }
+    .step h3{margin:6px 0 8px; font-size:16px}
+    .step p{margin:0; color: rgba(243,243,244,.72); font-size:13px; line-height:1.55}
+
+    .pricing{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      align-items:stretch;
+    }
+    .plan{
+      padding:20px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 18px 60px rgba(0,0,0,.36);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .plan.featured{
+      border-color: rgba(217,164,65,.35);
+      background: radial-gradient(700px 260px at 50% 0%, rgba(217,164,65,.20), transparent 60%), rgba(255,255,255,.03);
+    }
+    .plan .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:max-content;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(7,6,7,.35);
+      color: rgba(243,243,244,.86);
+      font-size:12px;
+    }
+    .price{
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:-.8px;
+      margin-top:6px;
+    }
+    .plan small{color: rgba(243,243,244,.66)}
+    .list{display:grid; gap:8px; margin:8px 0 0; padding:0; list-style:none}
+    .list li{color: rgba(243,243,244,.74); font-size:13px; line-height:1.45; display:flex; gap:10px}
+    .tick{width:18px; height:18px; border-radius:6px; background: rgba(255,204,106,.18); border:1px solid rgba(255,204,106,.25); display:grid; place-items:center; font-weight:900; color: rgba(255,204,106,.95)}
+
+    .plan .actions{margin-top:auto; display:flex; gap:10px; flex-wrap:wrap}
+
+    .faq{
+      display:grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .faq-left h2{margin:0 0 8px; font-size:28px; letter-spacing:-.4px}
+    .faq-left p{margin:0 0 14px; color: rgba(243,243,244,.70); line-height:1.55; font-size:14px}
+
+    .tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      width:max-content;
+    }
+    .tab{
+      border:1px solid transparent;
+      background: transparent;
+      color: rgba(243,243,244,.72);
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.1px;
+      padding:10px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.16s ease;
+    }
+    .tab[aria-selected="true"]{
+      border-color: rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+    }
+
+    .accordion{
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      overflow:hidden;
+    }
+
+    .qa{
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .qa:first-child{border-top:none}
+
+    .q{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      padding:16px 16px;
+      cursor:pointer;
+      background: transparent;
+      border:none;
+      color: var(--text);
+      font-weight:800;
+      font-size:14px;
+      text-align:left;
+    }
+    .q span{color: rgba(243,243,244,.86)}
+    .q i{
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      display:grid;
+      place-items:center;
+      color: rgba(243,243,244,.75);
+      font-style:normal;
+      transition: transform .16s ease;
+    }
+
+    .a{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .22s ease;
+    }
+    .a .inner{
+      padding:0 16px 16px;
+      color: rgba(243,243,244,.70);
+      line-height:1.65;
+      font-size:14px;
+    }
+
+    .qa[data-open="true"] .q i{transform: rotate(45deg)}
+
+    .cta-final{
+      margin-top:20px;
+      padding: 26px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.08);
+      background: radial-gradient(900px 300px at 50% 0%, rgba(217,164,65,.18), transparent 60%), rgba(255,255,255,.03);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .cta-final h3{margin:0; font-size:18px}
+    .cta-final p{margin:6px 0 0; color: rgba(243,243,244,.70); font-size:14px; line-height:1.55; max-width:68ch}
+
+    footer{
+      padding: 26px 0 40px;
+      color: rgba(243,243,244,.55);
+      font-size:13px;
+    }
+    .footer-grid{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:center}
+    .foot-links{display:flex; gap:12px; flex-wrap:wrap}
+    .foot-links a{color: rgba(243,243,244,.60); text-decoration:none}
+    .foot-links a:hover{color: rgba(243,243,244,.85)}
+
+    /* Reveal on scroll */
+    .reveal{opacity:0; transform: translateY(14px); transition: opacity .42s ease, transform .42s ease}
+    .reveal.is-in{opacity:1; transform: translateY(0)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .nav{grid-template-columns: 1fr auto; grid-template-rows:auto auto;}
+      .nav-pill{grid-column:1 / -1; justify-content:center}
+      .nav-right{grid-column:2}
+      .brand{grid-column:1}
+      .device-grid{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr}
+      .pricing{grid-template-columns:1fr}
+      .faq{grid-template-columns:1fr}
+      header{padding:12px 0}
+    }
+    @media (max-width: 520px){
+      .topbar{font-size:12px}
+      .brand small{display:none}
+      .chip{display:none}
+      .btn{width:100%}
+      .cta-row{gap:10px}
+      .logos{gap:10px}
+      .logo{font-size:12px}
+      .showcase-inner{padding:16px}
+      .cta-final{padding:18px}
+    }
+  </style>
 </head>
+
 <body>
+  <div class="bg" aria-hidden="true"></div>
 
-    <div class="noise-overlay"></div>
-
-    <div class="preloader">
-        <div class="preloader-text">
-            <span>MOODIGITAL.</span>
-        </div>
+  <div class="topbar" role="status">
+    <div class="container">
+      <span>Offre de lancement: <strong>-20%</strong> sur la mise en ligne + support 30 jours (code: <strong>START20</strong>)</span>
     </div>
+  </div>
 
-    <header>
-        <div class="container nav-flex">
-            <div class="logo">moodigital.</div>
-            <a href="mailto:contact@moodigital.com" class="btn">Contact</a>
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div>
+            <b>Lyvora</b>
+            <small>Landing pages sur mesure</small>
+          </div>
         </div>
-    </header>
 
-    <section class="hero">
-        <div class="hero-blob"></div>
-        <div class="container">
-            <h1>
-                <span class="line"><span class="word-anim">Crafting</span></span>
-                <span class="line"><span class="word-anim" style="color: transparent; -webkit-text-stroke: 1px #fff;">Digital</span></span>
-                <span class="line"><span class="word-anim">Dreams.</span></span>
-            </h1>
-            <p class="hero-desc anim-fade">
-                Agence créative fusionnant design stratégique et développement technique. 
-                Nous transformons votre vision en une expérience digitale inoubliable.
+        <nav class="nav-pill" aria-label="Navigation principale">
+          <a href="#offre">Offre</a>
+          <a href="#preuves">Preuves</a>
+          <a href="#process">Process</a>
+          <a href="#pricing">Offres</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <div class="nav-right">
+          <a class="chip" href="tel:+33000000000" aria-label="Appeler">
+            <span aria-hidden="true">☎</span>
+            <span>+33 0 00 00 00 00</span>
+          </a>
+          <a class="btn btn-primary" href="#demo">Reserver une demo</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="demo">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="badge-row">
+            <div class="avatar-stack">
+              <div class="avatars" aria-hidden="true">
+                <div class="avatar">Y</div>
+                <div class="avatar">L</div>
+                <div class="avatar">V</div>
+                <div class="avatar">A</div>
+                <div class="avatar">R</div>
+              </div>
+              <span style="color: rgba(243,243,244,.86); font-size:13px; font-weight:800">Equipe delivery rapide</span>
+            </div>
+            <div class="mini"><span aria-hidden="true">⚡</span> Livraison en 72h (si contenus prêts)</div>
+          </div>
+
+          <h1>Une landing page premium qui convertit, sans usine a gaz</h1>
+          <p class="sub">Un design haut de gamme, une structure orientée ventes, et une perf propre (mobile first). Tu repars avec un fichier HTML autonome ou une intégration sur ton outil.</p>
+
+          <div class="rating">
+            <div class="pill">
+              <span class="stars" aria-hidden="true">★★★★★</span>
+              <span><b>4,9</b> sur 5</span>
+              <span style="opacity:.65">|</span>
+              <span>avis clients</span>
+            </div>
+          </div>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#pricing">Voir les offres</a>
+            <a class="btn" href="#offre">Voir des exemples</a>
+          </div>
+
+          <div class="logos" aria-label="Ils nous font confiance">
+            <div class="logo">Shopify</div>
+            <div class="logo">WordPress</div>
+            <div class="logo">Stripe</div>
+            <div class="logo">Notion</div>
+            <div class="logo">Calendly</div>
+            <div class="logo">Meta Ads</div>
+          </div>
+
+          <div class="showcase reveal" id="offre">
+            <div class="showcase-inner panel">
+              <div class="device">
+                <div class="device-grid">
+                  <div class="mock" role="img" aria-label="Apercu de la landing page">
+                    <div class="label"><span class="dot" aria-hidden="true"></span> Apercu en direct</div>
+                    <div class="hint">
+                      Place ici une capture de ton offre, ou garde ce mock si tu veux un style plus "produit".
+                      L'objectif: 1 promesse claire, 1 chemin de conversion, 0 friction.
+                    </div>
+                  </div>
+
+                  <aside class="side">
+                    <h3>Ce qui est optimise par defaut</h3>
+                    <p>Structure, micro copy, hierarchie visuelle, et CTA. Pas de decoration gratuite.</p>
+
+                    <div class="kpi">
+                      <div class="item">
+                        <b>Message en 2 secondes</b>
+                        <small>Promesse + cible + benefice</small>
+                      </div>
+                      <div class="item">
+                        <b>1 seul objectif</b>
+                        <small>Demande de demo, achat, ou lead</small>
+                      </div>
+                      <div class="item">
+                        <b>Mobile first</b>
+                        <small>Spacing, boutons, lisibilite</small>
+                      </div>
+                    </div>
+
+                    <a class="btn btn-primary" href="#pricing" style="margin-top:6px">Demarrer maintenant</a>
+                    <a class="btn" href="#faq">Questions frequentes</a>
+                  </aside>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="preuves">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Une page qui "vend" sans forcer</h2>
+            <p>Le standard: une belle page mais aucune comprehension immediate. Ici, on inverse la logique: clarte d'abord, design ensuite.</p>
+          </div>
+          <a class="btn" href="#demo">Parler du projet</a>
+        </div>
+
+        <div class="grid-3 reveal">
+          <article class="card">
+            <div class="icon">1</div>
+            <h3>Promesse nette</h3>
+            <p>Une accroche qui dit ce que tu fais, pour qui, et pourquoi c'est mieux, sans blabla.</p>
+            <a class="btn" href="#process">Voir le process</a>
+          </article>
+          <article class="card">
+            <div class="icon">2</div>
+            <h3>Preuves visibles</h3>
+            <p>Logos, chiffres, retours clients, et exemples concrets places au bon endroit dans le scroll.</p>
+            <a class="btn" href="#faq">Voir la FAQ</a>
+          </article>
+          <article class="card">
+            <div class="icon">3</div>
+            <h3>CTA sans confusion</h3>
+            <p>Un appel a l'action unique, repete intelligemment, avec un chemin simple jusqu'a la conversion.</p>
+            <a class="btn btn-primary" href="#pricing">Voir les offres</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Livraison en 3 etapes</h2>
+            <p>Si tu as deja ton offre et tes contenus, on peut aller vite. Sinon on verrouille d'abord la proposition, puis on design.</p>
+          </div>
+        </div>
+
+        <div class="steps reveal">
+          <div class="step">
+            <div class="n">01</div>
+            <h3>Clarification de l'offre</h3>
+            <p>On fixe la cible, la promesse, les objections, et le call to action principal. 20 minutes, pas plus.</p>
+          </div>
+          <div class="step">
+            <div class="n">02</div>
+            <h3>Design + copy</h3>
+            <p>Hero, preuves, sections, FAQ, footer. On construit un scroll logique, pas une page "catalogue".</p>
+          </div>
+          <div class="step">
+            <div class="n">03</div>
+            <h3>Dev + perf</h3>
+            <p>HTML propre, animations legeres, responsive, accessibilite, et une base facile a maintenir.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>Offres simples</h2>
+            <p>Choisis selon ton niveau de maturite. Tu peux commencer petit, puis upgrader sans repartir de zero.</p>
+          </div>
+        </div>
+
+        <div class="pricing reveal">
+          <div class="plan">
+            <div class="tag">Starter</div>
+            <div class="price">149€</div>
+            <small>Pour une page propre et efficace.</small>
+            <ul class="list">
+              <li><span class="tick">✓</span> 1 landing (1 page)</li>
+              <li><span class="tick">✓</span> Responsive mobile</li>
+              <li><span class="tick">✓</span> 1 aller retour de retouches</li>
+              <li><span class="tick">✓</span> Livraison HTML autonome</li>
+            </ul>
+            <div class="actions">
+              <a class="btn btn-primary" href="#demo">Choisir</a>
+              <a class="btn" href="#faq">Details</a>
+            </div>
+          </div>
+
+          <div class="plan featured">
+            <div class="tag">Recommande</div>
+            <div class="price">279€</div>
+            <small>Le meilleur ratio conversion + design.</small>
+            <ul class="list">
+              <li><span class="tick">✓</span> Copy optimise (hero + sections)</li>
+              <li><span class="tick">✓</span> Preuves + FAQ structurees</li>
+              <li><span class="tick">✓</span> Animations legeres</li>
+              <li><span class="tick">✓</span> 2 allers retours de retouches</li>
+            </ul>
+            <div class="actions">
+              <a class="btn btn-primary" href="#demo">Choisir</a>
+              <a class="btn" href="#offre">Voir un exemple</a>
+            </div>
+          </div>
+
+          <div class="plan">
+            <div class="tag">Ultime</div>
+            <div class="price">379€</div>
+            <small>Pour scaler (ads + tracking + variantes).</small>
+            <ul class="list">
+              <li><span class="tick">✓</span> Variante A/B (2 heros)</li>
+              <li><span class="tick">✓</span> Setup tracking (plan)</li>
+              <li><span class="tick">✓</span> Section proof pack</li>
+              <li><span class="tick">✓</span> Support 30 jours</li>
+            </ul>
+            <div class="actions">
+              <a class="btn btn-primary" href="#demo">Choisir</a>
+              <a class="btn" href="#faq">Questions</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cta-final reveal">
+          <div>
+            <h3>Tu veux une version "ultra proche" de ta reference, mais 100% originale ?</h3>
+            <p>Envoie ton branding (couleurs, typo, logo) et 2 ou 3 sites que tu aimes. Je reproduis le niveau de qualite, sans cloner le design d'un tiers.</p>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <a class="btn btn-primary" href="#demo">Reserver une demo</a>
+            <a class="btn" href="#faq">Voir la FAQ</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="faq reveal">
+          <div class="faq-left">
+            <h2>Questions frequentes</h2>
+            <p>Pas de surprise: delais, contenu, droits, et livrables sont clairs des le debut.</p>
+            <a class="btn btn-primary" href="#demo">Essayer</a>
+          </div>
+
+          <div>
+            <div class="tabs" role="tablist" aria-label="Categories FAQ">
+              <button class="tab" role="tab" aria-selected="true" data-tab="general">Divers</button>
+              <button class="tab" role="tab" aria-selected="false" data-tab="how">Fonctionnement</button>
+              <button class="tab" role="tab" aria-selected="false" data-tab="integrations">Integrations</button>
+            </div>
+
+            <div class="accordion" data-panel="general" style="margin-top:12px">
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Combien de temps pour livrer ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Si tes contenus sont prets, 72h est realiste. Sinon, on cale d'abord l'offre et la structure, puis on design.</div></div>
+              </div>
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Est-ce que je peux modifier la page moi meme ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Oui. Le fichier est propre, commente, et tu peux remplacer textes et sections sans casser la mise en page.</div></div>
+              </div>
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Tu peux refaire un site identique a une reference ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Je peux atteindre le meme niveau de qualite et une structure similaire, mais je ne clone pas une page tierce pixel par pixel. On fait une version originale, safe, et durable.</div></div>
+              </div>
+            </div>
+
+            <div class="accordion" data-panel="how" style="margin-top:12px; display:none">
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>De quoi as-tu besoin pour demarrer ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Ton offre (quoi, pour qui, prix), tes preuves (avis, logos, chiffres), et ton call to action. Si tu n'as pas, on le construit ensemble.</div></div>
+              </div>
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Tu livres en HTML ou sur un outil (Webflow, Framer...) ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Par defaut: HTML autonome. Sur demande: integration sur ton outil si tu as l'acces et le scope est clair.</div></div>
+              </div>
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Et le SEO sur une landing ?</span><i>+</i></button>
+                <div class="a"><div class="inner">On vise surtout conversion + vitesse. Mais on pose quand meme les bases: balises, structure Hn, accessibilite, et perf.</div></div>
+              </div>
+            </div>
+
+            <div class="accordion" data-panel="integrations" style="margin-top:12px; display:none">
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Tracking: Meta Pixel, GA4, events ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Oui. Je peux integrer les scripts et te donner la liste des events recommandés (view, lead, purchase, etc.).</div></div>
+              </div>
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Formulaire + CRM ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Possible via webhook, Zapier/Make, HubSpot, Notion, ou Google Sheets. On choisit le plus simple pour ton stack.</div></div>
+              </div>
+              <div class="qa" data-open="false">
+                <button class="q" type="button"><span>Calendrier de rendez-vous ?</span><i>+</i></button>
+                <div class="a"><div class="inner">Calendly, TidyCal, Google Calendar. On peut faire un bouton ou un embed selon l'experience voulue.</div></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="panel" style="padding:22px">
+          <div class="section-title" style="margin-bottom:10px">
+            <div>
+              <h2>Temoignage</h2>
+              <p>Un exemple de bloc avis (a remplacer par tes retours clients).</p>
+            </div>
+          </div>
+          <div class="card" style="max-width:760px">
+            <p style="margin:0; color: rgba(243,243,244,.78); line-height:1.65">
+              "On a enfin une page qui explique l'offre clairement. Les prospects comprennent plus vite, et les demandes de demo sont plus qualifiees."
             </p>
-            <div class="anim-fade">
-                <a href="#work" class="btn">Voir les projets</a>
+            <div style="margin-top:10px; color: rgba(243,243,244,.62); font-size:13px">
+              - Client (a remplacer)
             </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <section class="marquee-wrap">
-        <div class="marquee-inner">
-            <div class="marquee-part">Design • Strategy • Webflow • Shopify • Branding • Development •&nbsp;</div>
-            <div class="marquee-part">Design • Strategy • Webflow • Shopify • Branding • Development •&nbsp;</div>
-            <div class="marquee-part">Design • Strategy • Webflow • Shopify • Branding • Development •&nbsp;</div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>© <span id="y"></span> Lyvora. Tous droits reserves.</div>
+        <div class="foot-links">
+          <a href="#offre">Offre</a>
+          <a href="#pricing">Tarifs</a>
+          <a href="#faq">FAQ</a>
+          <a href="#demo">Contact</a>
         </div>
-    </section>
+      </div>
+    </div>
+  </footer>
 
-    <section class="work" id="work">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Sélection</h2>
-            </div>
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if(!id || id.length < 2) return;
+        const el = document.querySelector(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
 
-            <div class="project">
-                <div class="project-info">
-                    <h3>Aero Watch</h3>
-                    <p>Direction artistique et développement Shopify pour une marque de montres suisses. Focus sur l'expérience d'achat immersive.</p>
-                    <a href="#" class="btn">Voir le cas</a>
-                </div>
-                <div class="project-img-box">
-                    <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1988&auto=format&fit=crop" class="project-img" alt="Montre de luxe">
-                </div>
-            </div>
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if(en.isIntersecting) en.target.classList.add('is-in');
+      });
+    }, {threshold: 0.12});
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-            <div class="project">
-                <div class="project-info">
-                    <h3>Velvet Interiors</h3>
-                    <p>Site vitrine minimaliste pour un studio d'architecture d'intérieur. Animations fluides et galerie photo interactive.</p>
-                    <a href="#" class="btn">Voir le cas</a>
-                </div>
-                <div class="project-img-box">
-                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1974&auto=format&fit=crop" class="project-img" alt="Architecture">
-                </div>
-            </div>
+    // FAQ tabs
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('.accordion'));
+    tabs.forEach(t => t.addEventListener('click', () => {
+      const key = t.dataset.tab;
+      tabs.forEach(x => x.setAttribute('aria-selected', x === t ? 'true' : 'false'));
+      panels.forEach(p => {
+        const show = p.getAttribute('data-panel') === key;
+        p.style.display = show ? 'block' : 'none';
+      });
+    }));
 
-        </div>
-    </section>
-
-    <section class="footer-cta">
-        <div class="container">
-            <p style="color: var(--accent); margin-bottom: 20px;">QU'ATTENDEZ-VOUS ?</p>
-            <h2 class="big-cta-text">Let's build<br>the future.</h2>
-            <a href="mailto:contact@moodigital.com" class="btn" style="background: white; color: black; border-color: white;">Lancer le projet</a>
-            <div style="margin-top: 50px; font-size: 0.8rem; color: #555;">© 2025 MOODIGITAL AGENCY.</div>
-        </div>
-    </section>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
-
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
-
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+    // Accordions
+    document.querySelectorAll('.accordion .qa').forEach(qa => {
+      const btn = qa.querySelector('.q');
+      const ans = qa.querySelector('.a');
+      btn.addEventListener('click', () => {
+        const open = qa.getAttribute('data-open') === 'true';
+        // close siblings inside same accordion
+        const parent = qa.closest('.accordion');
+        parent.querySelectorAll('.qa').forEach(sib => {
+          if(sib !== qa){
+            sib.setAttribute('data-open','false');
+            const a = sib.querySelector('.a');
+            if(a) a.style.maxHeight = 0;
+          }
         });
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
+        qa.setAttribute('data-open', open ? 'false' : 'true');
+        if(!open){
+          ans.style.maxHeight = ans.scrollHeight + 'px';
+        } else {
+          ans.style.maxHeight = 0;
         }
-        requestAnimationFrame(raf);
+      });
+    });
 
-        window.addEventListener("load", () => {
-            
-            const tl = gsap.timeline();
-
-            document.body.classList.add('loaded');
-
-            tl.to(".preloader-text span", {
-                y: 0,
-                duration: 1,
-                ease: "power4.out"
-            })
-            .to(".preloader-text span", {
-                y: "-100%",
-                duration: 0.8,
-                delay: 0.5,
-                ease: "power4.in"
-            })
-            .to(".preloader", {
-                y: "-100%",
-                duration: 1,
-                ease: "power4.inOut"
-            }, "-=0.3")
-
-            .from(".word-anim", {
-                y: 150,
-                rotation: 5,
-                opacity: 0,
-                duration: 1.5,
-                stagger: 0.1,
-                ease: "power3.out"
-            }, "-=0.5")
-            .from(".anim-fade", {
-                opacity: 0,
-                y: 30,
-                duration: 1,
-                stagger: 0.2,
-                ease: "power2.out"
-            }, "-=1");
-        });
-
-        document.querySelectorAll('.project-img-box').forEach(box => {
-            gsap.to(box.querySelector('img'), {
-                yPercent: -20,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: box,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-        });
-
-        document.querySelectorAll('.project').forEach(proj => {
-            gsap.from(proj, {
-                opacity: 0,
-                y: 50,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: proj,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse"
-                }
-            });
-        });
-
-    </script>
+    // Year
+    document.getElementById('y').textContent = String(new Date().getFullYear());
+  </script>
 </body>
 </html>
