@@ -3,75 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page Exclusive</title>
+    <title>Moodigital | Agence Créative</title>
     <style>
-        /* CSS Reset & Base */
+        /* --- CONFIGURATION & RESET --- */
+        :root {
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent-gradient: linear-gradient(90deg, #7928CA, #FF0080);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #000; color: #fff; line-height: 1.6; }
         
-        /* Layout */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        
-        /* Hero Section */
-        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #222 0%, #000 70%); }
-        .hero-content { max-width: 800px; }
-        
-        h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 700; letter-spacing: -1px; }
-        p.subtitle { font-size: 1.25rem; color: #ccc; margin-bottom: 40px; }
-        
-        /* Button Styles */
-        .btn { display: inline-block; padding: 15px 40px; background-color: #fff; color: #000; text-decoration: none; font-weight: 600; border-radius: 50px; transition: transform 0.2s, background-color 0.2s; }
-        .btn:hover { transform: scale(1.05); background-color: #f0f0f0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow-x: hidden; /* Évite le scroll horizontal */
+        }
 
-        /* Product Grid */
-        .features { padding: 100px 0; background: #111; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        .card { background: #000; padding: 30px; border-radius: 20px; border: 1px solid #333; }
-        .card h3 { margin-bottom: 10px; font-size: 1.5rem; }
-        .card p { color: #888; }
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(10px); /* Effet verre dépoli */
+        }
 
-        /* Footer */
-        footer { padding: 50px 0; text-align: center; color: #555; font-size: 0.9rem; }
-        
-        /* Mobile */
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .cta-nav {
+            padding: 10px 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-nav:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        /* Animation de fond (Glow) */
+        .glow-bg {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(121,40,202,0.15) 0%, rgba(5,5,5,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: pulse 6s infinite alternate;
+        }
+
+        h1 {
+            font-size: 5rem; /* Très gros titre */
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.2s;
+        }
+
+        h1 span {
+            display: block;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.4s;
+        }
+
+        /* Bouton Principal */
+        .main-btn {
+            display: inline-block;
+            padding: 16px 48px;
+            background: var(--text-main);
+            color: var(--bg-color);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.6s;
+        }
+
+        .main-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Indicateur de scroll */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1s;
+        }
+        .mouse {
+            width: 26px;
+            height: 42px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            position: relative;
+        }
+        .wheel {
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll 1.5s infinite;
+        }
+
+        /* --- ANIMATIONS KEYFRAMES --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes scroll {
+            0% { top: 8px; opacity: 1; }
+            100% { top: 20px; opacity: 0; }
+        }
+
+        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
+            h1 { font-size: 3rem; }
+            nav { padding: 20px; }
+            .glow-bg { width: 300px; height: 300px; }
         }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <div class="container hero-content">
-            <h1>L'Élégance Redéfinie.</h1>
-            <p class="subtitle">Une édition limitée conçue pour ceux qui exigent l'excellence. Design minimaliste, matériaux nobles.</p>
-            
-            <a href="#" class="btn">Acheter Maintenant</a> 
-        </div>
-    </section>
+    <nav>
+        <div class="logo">moodigital.</div>
+        <a href="mailto:hello@moodigital.com" class="cta-nav">Contact</a>
+    </nav>
 
-    <section class="features">
-        <div class="container">
-            <div class="grid">
-                <div class="card">
-                    <h3>Design Suisse</h3>
-                    <p>Conçu avec une précision horlogère pour une durabilité exceptionnelle.</p>
-                </div>
-                <div class="card">
-                    <h3>Matériaux Premium</h3>
-                    <p>Utilisation exclusive de titane et de verre saphir inrayable.</p>
-                </div>
-                <div class="card">
-                    <h3>Garantie à Vie</h3>
-                    <p>Nous croyons tellement en notre produit que nous le garantissons pour toujours.</p>
-                </div>
+    <section class="hero">
+        <div class="glow-bg"></div> <h1>
+            Élevez votre marque<br>
+            <span>vers l'infini digital.</span>
+        </h1>
+        
+        <p class="subtitle">
+            Nous transformons des idées complexes en expériences digitales fluides. 
+            Webdesign, Branding et Stratégie pour les visionnaires.
+        </p>
+        
+        <a href="#" class="main-btn">Lancer un projet</a>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2025 Votre Marque. Tous droits réservés.</p>
-    </footer>
+    <section style="height: 50vh; background: #050505; display: flex; justify-content: center; padding-top: 100px;">
+        <p style="color: #333;">La suite arrive...</p>
+    </section>
 
 </body>
 </html>
