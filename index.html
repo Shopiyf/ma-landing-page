@@ -124,6 +124,14 @@
             </svg>
         );
 
+        const MenuIcon = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        );
+
+        const XIcon = ({ className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 18 12"/></svg>
+        );
+
         const MoonIcon = ({ size = 24, strokeWidth = 2, className }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
@@ -167,7 +175,7 @@
             const variants = {
                 primary: "bg-amber text-cream border-amber hover:bg-earth hover:border-earth",
                 outline: "bg-transparent text-cream border-cream/20 hover:border-amber hover:text-amber",
-                ghost: "bg-transparent text-cream/60 hover:text-cream border-transparent"
+                ghost: "bg-transparent text-cream/60 hover:text-cream border-transparent hover:bg-white/5"
             };
             
             return (
@@ -198,7 +206,7 @@
             </motion.div>
         );
 
-        // 4. ANIMATED CONTAINER FOR FOOTER (Adapted from request)
+        // 4. ANIMATED CONTAINER FOR FOOTER
         const AnimatedContainer = ({ className, delay = 0.1, children }) => {
             const shouldReduceMotion = useReducedMotion();
 
@@ -221,43 +229,129 @@
 
         // --- PAGE SECTIONS ---
 
-        // HEADER / NAV
+        // HEADER / NAV (ADAPTED)
+        const menuItems = [
+            { name: 'Manifeste', href: '#manifeste' },
+            { name: 'Les Portes', href: '#piliers' },
+            { name: 'Partner', href: '#partner' },
+            { name: 'Journal', href: '#' },
+        ];
+
         const Navigation = () => {
+            const [menuState, setMenuState] = useState(false);
             const [isScrolled, setIsScrolled] = useState(false);
-            
+
             useEffect(() => {
-                const handleScroll = () => setIsScrolled(window.scrollY > 50);
+                const handleScroll = () => {
+                    setIsScrolled(window.scrollY > 50);
+                };
                 window.addEventListener('scroll', handleScroll);
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
 
             return (
-                <nav className={cn(
-                    "fixed top-0 w-full z-50 transition-all duration-500 border-b",
-                    isScrolled ? "bg-black/90 backdrop-blur-md border-white/5 py-4" : "bg-transparent border-transparent py-6"
-                )}>
-                    <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                            <Star8 className="w-5 h-5 text-amber" />
-                            <span className="font-serif text-xl tracking-wide text-cream">MOODIGITAL</span>
+                <header>
+                    <nav
+                        data-state={menuState && 'active'}
+                        className="fixed z-50 w-full px-2 pt-4 group"
+                    >
+                        <div
+                            className={cn(
+                                'mx-auto max-w-7xl px-6 transition-all duration-300',
+                                isScrolled
+                                    ? 'bg-black/80 max-w-4xl rounded-full border border-white/10 backdrop-blur-lg lg:px-8 py-3'
+                                    : 'py-6 lg:px-12'
+                            )}
+                        >
+                            <div className="relative flex flex-wrap items-center justify-between gap-6">
+                                {/* Logo */}
+                                <div className="flex w-full justify-between lg:w-auto items-center">
+                                    <a
+                                        href="/"
+                                        aria-label="home"
+                                        className="flex items-center space-x-2"
+                                    >
+                                        <Star8 className="w-5 h-5 text-amber" />
+                                        <span className="font-serif text-xl tracking-wide text-cream">MOODIGITAL</span>
+                                    </a>
+
+                                    {/* Mobile Toggle */}
+                                    <button
+                                        onClick={() => setMenuState(!menuState)}
+                                        aria-label={menuState ? 'Close Menu' : 'Open Menu'}
+                                        className="relative z-50 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden text-cream hover:text-amber transition-colors"
+                                    >
+                                        <div className="relative w-6 h-6">
+                                            <span className={cn("absolute inset-0 transition-all duration-300", menuState ? "opacity-0 rotate-180 scale-0" : "opacity-100 rotate-0 scale-100")}>
+                                                <MenuIcon className="w-6 h-6" />
+                                            </span>
+                                            <span className={cn("absolute inset-0 transition-all duration-300", menuState ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-180 scale-0")}>
+                                                <XIcon className="w-6 h-6" />
+                                            </span>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                {/* Desktop Links */}
+                                <div className="absolute inset-0 m-auto hidden size-fit lg:block">
+                                    <ul className="flex gap-8 text-sm font-manifesto tracking-widest uppercase">
+                                        {menuItems.map((item, index) => (
+                                            <li key={index}>
+                                                <a
+                                                    href={item.href}
+                                                    className="text-lilac/70 hover:text-amber block duration-150 transition-colors"
+                                                >
+                                                    {item.name}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {/* Mobile Menu Overlay & Desktop Right Side */}
+                                <div className={cn(
+                                    "absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl mt-4 flex-col gap-6 lg:static lg:w-auto lg:bg-transparent lg:p-0 lg:border-none lg:shadow-none lg:flex-row lg:items-center lg:mt-0",
+                                    menuState ? "flex" : "hidden lg:flex"
+                                )}>
+                                    
+                                    {/* Mobile Links */}
+                                    <div className="lg:hidden">
+                                        <ul className="space-y-6 text-lg font-serif">
+                                            {menuItems.map((item, index) => (
+                                                <li key={index}>
+                                                    <a
+                                                        href={item.href}
+                                                        onClick={() => setMenuState(false)}
+                                                        className="text-cream hover:text-amber block duration-150"
+                                                    >
+                                                        {item.name}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    {/* CTA */}
+                                    <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                                        <Button
+                                            variant="primary"
+                                            className={cn("text-xs px-6 py-2 rounded-full w-full md:w-auto", isScrolled ? "h-9" : "")}
+                                        >
+                                            <a href="#orientation">Candidater</a>
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="hidden md:flex gap-8 text-sm font-manifesto tracking-widest text-cream/70">
-                            <a href="#manifeste" className="hover:text-amber transition-colors">Manifeste</a>
-                            <a href="#piliers" className="hover:text-amber transition-colors">Les Portes</a>
-                            <a href="#partner" className="hover:text-amber transition-colors">Partner</a>
-                        </div>
-                        <Button variant="outline" className="text-xs px-6 py-2">
-                            Appel d'orientation
-                        </Button>
-                    </div>
-                </nav>
+                    </nav>
+                </header>
             );
         };
 
         // HERO SECTION
         const Hero = () => {
             return (
-                <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-earth">
+                <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-earth pt-20">
                     {/* Background Texture & Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-earth/90 to-black z-10"></div>
                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center opacity-30 grayscale mix-blend-overlay"></div>
@@ -472,9 +566,7 @@
             );
         };
 
-        // FOOTER (ADAPTED & INTEGRATED)
-        // Replaces the basic footer with the requested style adapted to Moodigital
-        
+        // FOOTER
         const footerLinks = [
             {
                 label: 'L\'Ordre',
