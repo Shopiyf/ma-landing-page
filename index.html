@@ -5,41 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Ordre Moodigital — Stratégie & Incarnation</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Playfair Display pour l'Autorité (remplace Canela), Oswald pour l'Audace (remplace Manuka), Inter pour le corps -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
+                        // J'ai mis Canela et Manuka en premier. 
+                        // Si le navigateur ne les trouve pas, il utilisera Playfair/Oswald par défaut.
                         sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                        display: ['Oswald', 'sans-serif'],
+                        serif: ['Canela', 'Playfair Display', 'serif'], 
+                        display: ['Manuka', 'Oswald', 'sans-serif'],
                     },
                     colors: {
-                        earth: "#6B3F24",     // Brun Terre
-                        forest: "#1F3A2E",    // Vert Forêt
-                        lilac: "#D8D1DA",     // Lilas / Gris Lavande
-                        amber: "#E07A2F",     // Orange Brûlé (Action)
-                        cream: "#F4F1EC",     // Blanc Cassé
-                        metal: "#B6B6B6",     // Inox
+                        earth: "#6B3F24",      // Brun Terre
+                        forest: "#1F3A2E",     // Vert Forêt
+                        lilac: "#D8D1DA",      // Lilas / Gris Lavande
+                        amber: "#E07A2F",      // Orange Brûlé (Action)
+                        cream: "#F4F1EC",      // Blanc Cassé
+                        metal: "#B6B6B6",      // Inox
                         black: "#111111",
                     },
                     backgroundImage: {
                         'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
                         'checker': "linear-gradient(45deg, #1a1a1a 25%, transparent 25%), linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a1a 75%), linear-gradient(-45deg, transparent 75%, #1a1a1a 75%)",
-                    },
-                    backgroundSize: {
-                        'checker': '20px 20px',
                     },
                     borderRadius: {
                         '4xl': '2rem',
@@ -51,8 +46,32 @@
         }
     </script>
     
-    <style>
-        /* Global Styles for "L'Ordre" Vibe */
+<style>
+        /* === DÉCLARATION DES POLICES LOCALES === */
+        
+        /* 1. MANUKA (Fichier finissant par ...d1) */
+        @font-face {
+            font-family: 'Manuka';
+            /* On charge d'abord le woff2 (plus léger), puis le woff en secours */
+            src: url('./1382df51f3297328e7355d0ecd34b0d1.woff2') format('woff2'),
+                 url('./1382df51f3297328e7355d0ecd34b0d1.woff') format('woff');
+            font-weight: 400; /* Ajuste si c'est du Bold */
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* 2. CANELA (L'autre fichier) */
+        @font-face {
+            font-family: 'Canela';
+            src: url('./4a24899e94d8236f671c1090cd9e068c.woff2') format('woff2'),
+                 url('./4a24899e94d8236f671c1090cd9e068c.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* === CONFIGURATION GLOBALE === */
+
         :root {
             --background: #111111;
             --foreground: #F4F1EC;
@@ -65,14 +84,15 @@
             overflow-x: hidden;
         }
 
-        /* Typography overrides for specific vibes */
+        /* Titres : Utilise Canela */
         h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Canela', 'Playfair Display', serif; 
             letter-spacing: -0.02em;
         }
 
+        /* Manifeste / Gros titres : Utilise Manuka */
         .font-manifesto {
-            font-family: 'Oswald', sans-serif;
+            font-family: 'Manuka', 'Oswald', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -82,7 +102,7 @@
             scroll-behavior: smooth;
         }
 
-        /* Utility for the grain texture overlay */
+        /* Texture Overlay */
         .texture-overlay {
             position: fixed;
             top: 0;
@@ -95,7 +115,6 @@
         }
     </style>
 
-    <!-- React & Framer Motion & Utils -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
