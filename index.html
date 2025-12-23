@@ -25,7 +25,7 @@
                         display: ['Manuka', 'Oswald', 'sans-serif'],
                     },
                     colors: {
-                        earth: "#6B3F24",      // Brun Terre (Socle)
+                        earth: "#6B3F24",      // Brun Terre / Cognac (Socle)
                         forest: "#1F3A2E",     // Vert Forêt (Sagesse)
                         lilac: "#D8D1DA",      // Lilas (Intuition)
                         amber: "#E07A2F",      // Orange Brûlé (Seuil/CTA)
@@ -34,12 +34,15 @@
                         black: "#111111",      // Structure
                     },
                     backgroundImage: {
-                        // Texture bruit léger pour remplacer le "bois" si pas d'image, ajoute de la matière
                         'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
                     },
-                    letterSpacing: {
-                        // Réglage spécifique Canela : tracking -2 à -4 (approximatif CSS)
-                        'tightest': '-0.04em', 
+                    borderRadius: {
+                        // Suppression des arrondis mous. On garde juste un micro-arrondi pour éviter l'effet "coupant"
+                        DEFAULT: '2px',
+                        'sm': '2px',
+                        'md': '4px',
+                        'lg': '4px',
+                        'full': '9999px', // Uniquement pour les badges ronds
                     }
                 },
             },
@@ -47,7 +50,9 @@
     </script>
     
     <style>
-        /* === POLICES LOCALES (Tes fichiers) === */
+        /* === DÉCLARATION DES POLICES LOCALES === */
+        
+        /* MANUKA (Accent / Signature) */
         @font-face {
             font-family: 'Manuka';
             src: url('./1382df51f3297328e7355d0ecd34b0d1.woff2') format('woff2'),
@@ -57,6 +62,7 @@
             font-display: swap;
         }
 
+        /* CANELA (Titres / Autorité) */
         @font-face {
             font-family: 'Canela';
             src: url('./4a24899e94d8236f671c1090cd9e068c.woff2') format('woff2'),
@@ -77,14 +83,14 @@
             background-color: var(--background);
             color: var(--foreground);
             overflow-x: hidden;
-            line-height: 1.6; /* Interlignage généreux (Guide: 1.4 - 1.6) */
+            line-height: 1.6; /* Interlignage généreux pour la respiration */
         }
 
-        /* TITRES (Canela) : Autorité calme, tracking serré */
+        /* TITRES (Canela) : Autorité calme, tracking serré (-2 à -4) */
         h1, h2, h3, h4 {
             font-family: 'Canela', 'Playfair Display', serif; 
-            letter-spacing: -0.03em; /* Tracking négatif strict */
-            line-height: 1.15; /* Interlignage serré (Guide: 1.1 - 1.2) */
+            letter-spacing: -0.03em; 
+            line-height: 1.15;
         }
 
         /* ACCENTS (Manuka) : Signature, max 2 lignes */
@@ -96,6 +102,7 @@
 
         html { scroll-behavior: smooth; }
 
+        /* Texture de fond subtile (remplace le bois si non dispo) */
         .texture-overlay {
             position: fixed;
             top: 0;
@@ -104,7 +111,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.08;
+            opacity: 0.07;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
         }
     </style>
@@ -129,15 +136,14 @@
             </svg>
         );
 
-        // Autres icônes minimalistes (Inox/Métal)
         const MenuIcon = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className}><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="18" y2="18"/></svg>;
         const XIcon = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className}><path d="M18 6 6 18"/><path d="m6 6 18 12"/></svg>;
-        
+        const ArrowRight = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>;
+
         // --- COMPOSANTS UI STRICTS ---
 
-        // 1. CTA BUTTON (Guide : Orange Brûlé, Texte Blanc, Inter Semi-Bold, Pas d'arrondis mous)
+        // 1. CTA BUTTON (Orange Brûlé, Texte Blanc, Inter Semi-Bold, Rectangulaire)
         const Button = ({ children, variant = "primary", className, ...props }) => {
-            // Changement : rounded-sm (très léger) au lieu de rounded-full pour "Blocs pleins"
             const baseStyle = "inline-flex items-center justify-center px-8 py-4 text-sm font-semibold transition-all duration-300 border font-sans tracking-wide cursor-pointer rounded-sm";
             const variants = {
                 primary: "bg-amber text-cream border-amber hover:bg-earth hover:border-earth hover:text-white",
@@ -152,31 +158,31 @@
             );
         };
 
-        // 2. SECTION HEADER (Alignements nets)
+        // 2. SECTION HEADER (Alignements nets, séparateur Métal)
         const SectionHeader = ({ surtitle, title, align = "center" }) => (
-            <div className={cn("mb-16 space-y-4", align === "center" ? "text-center" : "text-left")}>
-                {/* Manuka pour l'accent (Signature) */}
-                <span className="font-manifesto text-amber text-lg md:text-xl block">{surtitle}</span>
-                {/* Canela pour le titre (Autorité) */}
+            <div className={cn("mb-20 space-y-4", align === "center" ? "text-center" : "text-left")}>
+                {/* Manuka pour l'accent */}
+                <span className="font-manifesto text-amber text-xl md:text-2xl block">{surtitle}</span>
+                {/* Canela pour le titre */}
                 <h2 className="text-4xl md:text-6xl lg:text-7xl text-cream font-serif">{title}</h2>
-                {/* Séparateur Métal */}
+                {/* Séparateur Inox/Métal */}
                 <div className={cn("h-px w-24 bg-metal/40 mt-8", align === "center" ? "mx-auto" : "")}></div>
             </div>
         );
 
-        // 3. REVEAL
+        // 3. REVEAL (Animation sobre)
         const Reveal = ({ children, delay = 0 }) => (
             <motion.div
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }} // Courbe plus "sharp"
+                transition={{ duration: 0.8, delay, ease: "easeOut" }}
             >
                 {children}
             </motion.div>
         );
 
-        // --- STRUCTURE NAVIGATION ---
+        // --- NAVIGATION ---
         const Navigation = () => {
             const [menuState, setMenuState] = useState(false);
             const [isScrolled, setIsScrolled] = useState(false);
@@ -193,11 +199,11 @@
                         <div className={cn(
                             'w-full transition-all duration-500 border-b',
                             isScrolled 
-                                ? 'bg-black/95 border-white/5 py-4' 
+                                ? 'bg-black/95 border-white/5 py-4 backdrop-blur-sm' 
                                 : 'bg-transparent border-transparent py-6 lg:py-8'
                         )}>
                             <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                                {/* Logo : Structure / Noir & Blanc (ou Cream sur fond foncé) */}
+                                {/* Logo */}
                                 <a href="/" className="flex items-center gap-3 group">
                                     <Star8 className="w-6 h-6 text-amber group-hover:rotate-45 transition-transform duration-500" />
                                     <span className="font-serif text-xl tracking-wide text-cream">MOODIGITAL</span>
@@ -226,20 +232,20 @@
                             </div>
                         </div>
 
-                        {/* Mobile Menu (Plein écran, bloc plein) */}
+                        {/* Mobile Menu */}
                         {menuState && (
                             <div className="fixed inset-0 bg-black z-40 flex flex-col items-center justify-center space-y-8">
                                 {['Manifeste', 'Les Portes', 'Partner'].map((item) => (
                                     <a 
                                         key={item} 
-                                        href="#" 
+                                        href={`#${item.toLowerCase().replace(' ', '')}`}
                                         onClick={() => setMenuState(false)}
-                                        className="font-serif text-4xl text-cream hover:text-amber"
+                                        className="font-serif text-4xl text-cream hover:text-amber transition-colors"
                                     >
                                         {item}
                                     </a>
                                 ))}
-                                <Button variant="primary">Entrer dans l'Ordre</Button>
+                                <Button variant="primary" onClick={() => setMenuState(false)}>Entrer dans l'Ordre</Button>
                             </div>
                         )}
                     </nav>
@@ -251,19 +257,18 @@
         const Hero = () => {
             return (
                 <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-earth pt-20">
-                    {/* Fond : Texture "Matière" (ici bruit, idéalement bois sombre) */}
-                    <div className="absolute inset-0 bg-black/30 z-10"></div>
+                    <div className="absolute inset-0 bg-black/20 z-10"></div>
                     
                     <div className="relative z-20 text-center max-w-5xl px-6">
                         <Reveal>
-                            <div className="inline-flex items-center gap-3 border border-white/20 bg-black/20 px-4 py-2 mb-8 backdrop-blur-md">
+                            <div className="inline-flex items-center gap-3 border border-white/20 bg-black/20 px-4 py-2 mb-8 backdrop-blur-md rounded-sm">
                                 <span className="w-1.5 h-1.5 bg-amber"></span>
                                 <span className="text-xs font-sans uppercase tracking-[0.2em] text-lilac">Message Officiel</span>
                             </div>
                         </Reveal>
 
                         <Reveal delay={0.2}>
-                            <h1 className="text-6xl md:text-8xl lg:text-9xl text-cream font-serif leading-[0.95] mb-6">
+                            <h1 className="text-6xl md:text-8xl lg:text-9xl text-cream font-serif leading-[0.95] mb-8">
                                 L'ORDRE <br/>
                                 <span className="text-lilac/50">MOODIGITAL</span>
                             </h1>
@@ -292,8 +297,8 @@
             return (
                 <section id="manifeste" className="py-32 bg-black relative border-t border-white/5">
                     <div className="max-w-4xl mx-auto px-6 relative z-10">
-                        {/* Barre verticale Ambre (Ligne directrice) */}
-                        <div className="absolute left-6 md:left-0 top-0 bottom-0 w-px bg-amber/20 hidden md:block"></div>
+                        {/* Ligne verticale directrice (Ambre) */}
+                        <div className="absolute left-6 md:left-0 top-0 bottom-0 w-px bg-amber/30 hidden md:block"></div>
                         
                         <div className="md:pl-16">
                             <Reveal>
@@ -306,7 +311,7 @@
                             </Reveal>
                             
                             <Reveal delay={0.2}>
-                                <div className="space-y-8 text-lilac/80 text-lg font-light md:text-justify max-w-2xl">
+                                <div className="space-y-8 text-lilac/80 text-lg font-light md:text-justify max-w-2xl leading-relaxed">
                                     <p>
                                         Ce que je fais aujourd’hui ne peut plus être résumé à "communication".
                                         C’est accompagner des femmes à reprendre leur place, à <strong>incarner</strong> leur business.
@@ -320,7 +325,7 @@
                         </div>
                     </div>
                     
-                    {/* Damier (Ponctuel, discret en bas) */}
+                    {/* Damier Ponctuel (Discret) */}
                     <div className="absolute bottom-0 right-0 w-32 h-32 opacity-10"
                          style={{backgroundImage: 'linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%)', backgroundSize: '20px 20px'}}>
                     </div>
@@ -331,20 +336,25 @@
         // --- LES PORTES : VERT FORÊT (SAGESSE) ---
         const DoorCard = ({ title, subtitle, description, delay }) => (
             <Reveal delay={delay}>
-                {/* Bloc Plein, Bordure Inox fine, Pas d'arrondis mous */}
-                <div className="group h-full bg-forest border border-white/10 p-10 hover:border-amber/60 transition-colors duration-500 relative overflow-hidden">
-                    <div className="absolute top-4 right-4 text-amber opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <Star8 className="w-5 h-5" />
+                {/* Bloc Plein, Angles nets */}
+                <div className="group h-full bg-forest border border-white/10 p-10 hover:border-amber/60 transition-colors duration-500 relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div className="absolute top-4 right-4 text-amber opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <Star8 className="w-5 h-5" />
+                        </div>
+                        
+                        <h3 className="text-3xl font-serif text-cream mb-2">{title}</h3>
+                        <p className="font-manifesto text-sm text-amber mb-8 tracking-widest">{subtitle}</p>
+                        
+                        <div className="w-8 h-px bg-metal/50 mb-8 group-hover:w-full group-hover:bg-amber transition-all duration-700"></div>
+                        
+                        <p className="text-lilac/80 font-light leading-relaxed text-sm mb-8">
+                            {description}
+                        </p>
                     </div>
-                    
-                    <h3 className="text-3xl font-serif text-cream mb-2">{title}</h3>
-                    <p className="font-manifesto text-sm text-amber mb-6">{subtitle}</p>
-                    
-                    <div className="w-8 h-px bg-metal/50 mb-8 group-hover:w-full group-hover:bg-amber transition-all duration-700"></div>
-                    
-                    <p className="text-lilac/80 font-light leading-relaxed text-sm">
-                        {description}
-                    </p>
+                    <div className="flex items-center text-amber text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">
+                        Explorer <ArrowRight className="ml-2 w-4 h-4" />
+                    </div>
                 </div>
             </Reveal>
         );
@@ -388,25 +398,74 @@
                 </section>
             );
         };
-
-        // --- FOOTER : BRUN (RETOUR À LA TERRE) ---
-        const Footer = () => {
-            return (
-                <footer className="bg-earth pt-20 pb-10 border-t border-white/10">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <div className="grid md:grid-cols-2 gap-12 mb-20 items-end">
+        
+        // --- PARTNER DETAILS : POUR LA COHÉRENCE DU "BRAS DROIT" ---
+        const PartnerDetails = () => {
+             return (
+                <section id="partner" className="py-32 bg-earth text-cream relative overflow-hidden">
+                    {/* Background Noise override */}
+                    <div className="absolute inset-0 bg-black/10"></div>
+                    
+                    <div className="max-w-6xl mx-auto px-6 relative z-10">
+                        <div className="grid lg:grid-cols-2 gap-16 mb-20">
                             <div>
-                                <div className="flex items-center gap-3 mb-6">
-                                    <Star8 className="w-8 h-8 text-amber" />
-                                    <span className="font-serif text-3xl text-cream">MOODIGITAL</span>
+                                <h2 className="text-4xl md:text-5xl font-serif mb-6">Mood Partner</h2>
+                                <p className="text-lg text-lilac/90 font-light max-w-md leading-relaxed">
+                                    Ici, on ne vend pas du temps. On vend de la vision, de l'arbitrage et de la structure.
+                                    Un pacte sur la durée pour celles qui sont prêtes.
+                                </p>
+                            </div>
+                            <div className="bg-black/20 p-8 border border-white/10 self-end">
+                                <h5 className="font-manifesto text-amber mb-4">Règle d'or</h5>
+                                <p className="italic text-cream/90 font-serif text-xl">
+                                    "La posture précède toujours la stratégie. Ce cadre est là pour te protéger."
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* List style propre */}
+                        <div className="border-t border-white/10 space-y-0">
+                             {[
+                                { title: "ESSENTIAL", target: "Solopreneures lancées", result: "Moins de charge mentale." },
+                                { title: "GROWTH", target: "Premières équipes", result: "Croissance maîtrisée." },
+                                { title: "EXPANSION", target: "Marques établies", result: "Expansion alignée." }
+                             ].map((item, idx) => (
+                                <div key={idx} className="grid md:grid-cols-12 gap-6 py-8 border-b border-white/10 hover:bg-white/5 transition-colors px-4">
+                                    <div className="md:col-span-4 font-serif text-2xl">{item.title}</div>
+                                    <div className="md:col-span-4 text-lilac/80">{item.target}</div>
+                                    <div className="md:col-span-4 text-lilac/80">{item.result}</div>
                                 </div>
-                                <p className="text-lilac/70 font-light max-w-sm">
+                             ))}
+                        </div>
+
+                        <div className="mt-20 text-center">
+                            <Button>Candidater pour Partner</Button>
+                        </div>
+                    </div>
+                </section>
+             )
+        }
+
+        // --- FOOTER : RETOUR À LA TERRE & PHRASE SCEAU ---
+        const Footer = () => {
+            const currentYear = new Date().getFullYear();
+            
+            return (
+                <footer className="bg-black pt-24 pb-12 border-t border-white/10 relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="grid md:grid-cols-2 gap-12 mb-20 items-start">
+                            <div>
+                                <div className="flex items-center gap-3 mb-8">
+                                    <Star8 className="w-8 h-8 text-amber" />
+                                    <span className="font-serif text-3xl text-cream tracking-wide">MOODIGITAL</span>
+                                </div>
+                                <p className="text-lilac/60 font-light max-w-xs leading-relaxed">
                                     Stratégie & Incarnation.<br/>
                                     Ni bruit, ni fureur. Juste l'essentiel.
                                 </p>
                             </div>
                             <div className="md:text-right">
-                                <ul className="flex flex-wrap justify-end gap-x-8 gap-y-4 font-manifesto text-amber text-sm tracking-widest uppercase">
+                                <ul className="flex flex-col md:flex-row md:justify-end gap-x-8 gap-y-4 font-manifesto text-amber text-sm tracking-widest uppercase">
                                     <li><a href="#" className="hover:text-cream transition-colors">Instagram</a></li>
                                     <li><a href="#" className="hover:text-cream transition-colors">LinkedIn</a></li>
                                     <li><a href="#" className="hover:text-cream transition-colors">Mentions Légales</a></li>
@@ -414,13 +473,13 @@
                             </div>
                         </div>
 
-                        {/* PHRASE SCEAU (OBLIGATOIRE) */}
-                        <div className="border-t border-white/10 pt-10 text-center">
-                            <p className="font-serif text-lg md:text-xl text-lilac/60 italic">
+                        {/* PHRASE-SCEAU (OBLIGATOIRE) */}
+                        <div className="border-t border-white/10 pt-16 text-center">
+                            <p className="font-serif text-xl md:text-2xl text-lilac/70 italic tracking-wide">
                                 "Dans l’Ordre Moodigital, tout ce qui est transmis est destiné à être incarné."
                             </p>
-                            <p className="text-lilac/30 text-xs mt-8 font-sans uppercase tracking-widest">
-                                © 2025 L'Ordre Moodigital.
+                            <p className="text-lilac/30 text-[10px] mt-12 font-sans uppercase tracking-[0.2em]">
+                                © {currentYear} L'Ordre Moodigital. Tous droits réservés.
                             </p>
                         </div>
                     </div>
@@ -436,6 +495,7 @@
                     <Hero />
                     <Manifesto />
                     <TheDoors />
+                    <PartnerDetails />
                     <Footer />
                 </div>
             );
