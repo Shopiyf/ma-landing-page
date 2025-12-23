@@ -32,10 +32,10 @@
                     },
                     backgroundImage: {
                         'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.07%22/%3E%3C/svg%3E')",
-                        'checker': "linear-gradient(45deg, #1a1a1a 25%, transparent 25%), linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a1a 75%), linear-gradient(-45deg, transparent 75%, #1a1a1a 75%)",
                     },
                     letterSpacing: {
                         'tightest': '-0.04em',
+                        'manifesto': '0.15em',
                     }
                 },
             },
@@ -44,8 +44,6 @@
     
     <style>
         /* === DÉCLARATION DES POLICES LOCALES === */
-        /* Si les fichiers ne sont pas présents, les fallbacks (Playfair/Oswald) prendront le relais */
-        
         @font-face {
             font-family: 'Manuka';
             src: url('./1382df51f3297328e7355d0ecd34b0d1.woff2') format('woff2'),
@@ -65,7 +63,6 @@
         }
 
         /* === CONFIGURATION GLOBALE === */
-
         :root {
             --background: #111111;
             --foreground: #F4F1EC;
@@ -79,26 +76,17 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Règle H1/H2 : Canela, tracking serré, autorité */
         h1, h2, h3, h4 {
             font-family: 'Canela', 'Playfair Display', serif; 
-            letter-spacing: -0.03em; /* Tracking -2 to -4 equivalent */
-            line-height: 1.1;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
         }
 
-        /* Règle Manuka : Accent, signature */
         .font-manifesto {
             font-family: 'Manuka', 'Oswald', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Texture Overlay (Grain) */
         .texture-overlay {
             position: fixed;
             top: 0;
@@ -107,14 +95,20 @@
             height: 100%;
             pointer-events: none;
             z-index: 9999;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            opacity: 0.6;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+            opacity: 0.8;
+            mix-blend-mode: overlay;
         }
 
-        /* Sélection de texte Ambre */
         ::selection {
-            background-color: #E07A2F; /* Amber */
+            background-color: #E07A2F;
             color: #F4F1EC;
+        }
+        
+        /* Utilitaires de lignes fines */
+        .border-fine {
+            border-width: 1px;
+            border-color: rgba(255, 255, 255, 0.08);
         }
     </style>
 
@@ -132,14 +126,13 @@
     <script type="text/babel">
         // --- UTILS & SETUP ---
         const { useState, useEffect, useRef, useMemo, useCallback, memo } = React;
-        const { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } = window.Motion;
+        const { motion, useScroll, useTransform, AnimatePresence } = window.Motion;
         
         function cn(...inputs) {
             return window.clsx ? window.clsx(inputs) : inputs.filter(Boolean).join(' ');
         }
 
-        // --- CUSTOM ICONS (Symbolique: Étoile à 8 branches) ---
-        
+        // --- CUSTOM ICONS ---
         const Star8 = ({ className }) => (
             <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z" />
@@ -147,22 +140,21 @@
         );
 
         const MenuIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" className={className}><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" className={className}><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
         );
 
         const XIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" className={className}><path d="M18 6 6 18"/><path d="m6 6 18 12"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" className={className}><path d="M18 6 6 18"/><path d="m6 6 18 12"/></svg>
         );
 
         // --- UI COMPONENTS ---
 
-        // 1. CTA BUTTON (CHARTE: Orange Brûlé, Inter Semi-bold, Rectangulaire)
         const Button = ({ children, variant = "primary", className, ...props }) => {
-            const baseStyle = "inline-flex items-center justify-center px-8 py-4 text-sm font-semibold tracking-wide transition-all duration-300 border font-sans cursor-pointer uppercase rounded-sm"; // Changed from rounded-full to rounded-sm (sharp)
+            const baseStyle = "inline-flex items-center justify-center px-10 py-4 text-xs font-semibold tracking-widest transition-all duration-300 border font-sans cursor-pointer uppercase rounded-none";
             const variants = {
                 primary: "bg-amber text-cream border-amber hover:bg-earth hover:border-earth hover:text-white",
-                outline: "bg-transparent text-cream border-cream/30 hover:border-amber hover:text-amber",
-                ghost: "bg-transparent text-lilac hover:text-amber border-transparent hover:bg-white/5"
+                outline: "bg-transparent text-cream border-cream/20 hover:border-amber hover:text-amber",
+                ghost: "bg-transparent text-lilac/70 hover:text-amber border-transparent hover:bg-white/5"
             };
             
             return (
@@ -172,26 +164,23 @@
             );
         };
 
-        // 2. SECTION HEADER
         const SectionHeader = ({ surtitle, title, align = "center", light = false }) => (
-            <div className={cn("mb-20 space-y-6", align === "center" ? "text-center" : "text-left")}>
-                <div className={cn("flex items-center gap-3", align === "center" ? "justify-center" : "justify-start")}>
-                     <Star8 className="w-3 h-3 text-amber" />
-                     <span className="font-manifesto text-amber text-sm tracking-[0.2em] uppercase">{surtitle}</span>
-                     <Star8 className="w-3 h-3 text-amber" />
+            <div className={cn("mb-24 space-y-8", align === "center" ? "text-center" : "text-left")}>
+                <div className={cn("flex items-center gap-4", align === "center" ? "justify-center" : "justify-start")}>
+                     <Star8 className="w-2 h-2 text-amber" />
+                     <span className="font-manifesto text-amber text-xs tracking-manifesto uppercase">{surtitle}</span>
+                     <Star8 className="w-2 h-2 text-amber" />
                 </div>
-                <h2 className={cn("text-5xl md:text-6xl lg:text-7xl font-serif tracking-tightest", light ? "text-forest" : "text-cream")}>{title}</h2>
-                <div className={cn("h-px w-32 bg-metal/40 mt-8", align === "center" ? "mx-auto" : "")}></div>
+                <h2 className={cn("text-6xl md:text-7xl lg:text-8xl font-serif tracking-tightest", light ? "text-forest" : "text-cream")}>{title}</h2>
             </div>
         );
 
-        // 3. REVEAL ANIMATION
         const Reveal = ({ children, delay = 0 }) => (
             <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }} // Custom easing for "Authority"
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
             >
                 {children}
             </motion.div>
@@ -199,7 +188,6 @@
 
         // --- PAGE SECTIONS ---
 
-        // NAV (SHARP & MINIMAL)
         const Navigation = () => {
             const [menuState, setMenuState] = useState(false);
             const [isScrolled, setIsScrolled] = useState(false);
@@ -210,75 +198,61 @@
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
 
-            const menuItems = [
-                { name: 'Manifeste', href: '#manifeste' },
-                { name: 'L\'Ordre', href: '#piliers' },
-                { name: 'Partner', href: '#partner' },
-                { name: 'Journal', href: '#' },
-            ];
-
             return (
                 <header>
                     <nav className="fixed z-50 w-full pt-0">
                         <div 
                             className={cn(
-                                'w-full px-6 md:px-12 transition-all duration-500 border-b relative z-50',
+                                'w-full px-6 md:px-12 transition-all duration-700 border-b relative z-50',
                                 isScrolled 
-                                    ? 'bg-black/95 backdrop-blur-md border-white/10 py-4' 
+                                    ? 'bg-black/95 backdrop-blur-xl border-white/5 py-4' 
                                     : 'bg-transparent border-transparent py-8'
                             )}
                         >
-                            <div className="flex items-center justify-between max-w-7xl mx-auto">
-                                {/* Logo */}
+                            <div className="flex items-center justify-between max-w-[1400px] mx-auto">
                                 <a href="/" className="flex items-center space-x-3 group">
-                                    <Star8 className="w-5 h-5 text-amber transition-transform duration-500 group-hover:rotate-45" />
-                                    <span className="font-serif text-2xl tracking-tight text-cream">MOODIGITAL</span>
+                                    <Star8 className="w-4 h-4 text-amber transition-transform duration-700 group-hover:rotate-90" />
+                                    <span className="font-serif text-2xl tracking-tight text-cream relative top-1">MOODIGITAL</span>
                                 </a>
 
-                                {/* Desktop Links - Sharp & Clean */}
-                                <div className="hidden lg:flex items-center gap-12">
-                                    <ul className="flex gap-10 text-xs font-manifesto tracking-[0.15em] uppercase">
-                                        {menuItems.map((item) => (
-                                            <li key={item.name}>
-                                                <a href={item.href} className="text-lilac hover:text-amber transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-px after:bg-amber hover:after:w-full after:transition-all after:duration-300">
-                                                    {item.name}
+                                <div className="hidden lg:flex items-center gap-16">
+                                    <ul className="flex gap-12 text-[10px] font-manifesto tracking-manifesto uppercase">
+                                        {['L\'Ordre', 'Origin', 'Partner', 'Transmissions', 'Journal'].map((item) => (
+                                            <li key={item}>
+                                                <a href={`#${item.toLowerCase()}`} className="text-lilac/70 hover:text-amber transition-colors duration-300">
+                                                    {item}
                                                 </a>
                                             </li>
                                         ))}
                                     </ul>
-                                    <Button variant="outline" className="px-6 py-2 text-xs h-auto border-white/20 hover:border-amber">
-                                        Candidater
+                                    <Button variant="outline" className="px-6 py-2 text-[10px] h-auto border-white/20 hover:border-amber">
+                                        Appel d'orientation
                                     </Button>
                                 </div>
 
-                                {/* Mobile Toggle */}
                                 <button onClick={() => setMenuState(!menuState)} className="lg:hidden text-cream hover:text-amber">
                                     {menuState ? <XIcon /> : <MenuIcon />}
                                 </button>
                             </div>
                         </div>
 
-                        {/* Mobile Menu Overlay */}
                         <AnimatePresence>
                             {menuState && (
                                 <motion.div 
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: "100vh" }}
-                                    exit={{ opacity: 0, height: 0 }}
+                                    initial={{ opacity: 0, y: "-100%" }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: "-100%" }}
+                                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                                     className="fixed inset-0 bg-earth z-40 flex items-center justify-center lg:hidden"
                                 >
-                                    <ul className="flex flex-col items-center gap-8 text-center">
-                                        {menuItems.map((item) => (
-                                            <li key={item.name}>
-                                                <a href={item.href} onClick={() => setMenuState(false)} className="font-serif text-4xl text-cream hover:text-amber hover:italic transition-all">
-                                                    {item.name}
-                                                </a>
-                                            </li>
+                                    <div className="flex flex-col items-center gap-8 text-center">
+                                        <span className="text-amber font-manifesto text-xs tracking-manifesto mb-4">L'ORDRE EST OUVERT</span>
+                                        {['Manifeste', 'Origin', 'Partner', 'Transmissions'].map((item) => (
+                                            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuState(false)} className="font-serif text-5xl text-cream hover:text-amber hover:italic transition-all duration-300">
+                                                {item}
+                                            </a>
                                         ))}
-                                        <div className="mt-8">
-                                            <Button onClick={() => setMenuState(false)}>Entrer dans l'Ordre</Button>
-                                        </div>
-                                    </ul>
+                                    </div>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -287,77 +261,81 @@
             );
         };
 
-        // HERO (EARTH BASE)
         const Hero = () => {
             return (
-                <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-earth">
-                    {/* Background Texture & Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-earth/80 to-black z-10"></div>
-                    {/* Image Placeholder with grayscale overlay */}
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-multiply filter grayscale contrast-125"></div>
+                <section className="relative h-screen flex items-center justify-center overflow-hidden bg-earth">
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-earth/90 to-black z-10"></div>
+                    {/* Placeholder plus "Matière" et "Bois" comme demandé */}
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542259646-173663b65261?q=80&w=2544&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-multiply filter sepia-[.3] contrast-125"></div>
                     
-                    <div className="relative z-20 text-center max-w-6xl px-6 flex flex-col items-center pt-20">
+                    <div className="relative z-20 text-center max-w-5xl px-6 flex flex-col items-center pt-10">
                         <Reveal>
-                            <div className="mb-8 inline-flex items-center gap-4 border-b border-amber/50 pb-2">
-                                <span className="text-xs font-manifesto tracking-[0.25em] text-amber uppercase">Message Officiel</span>
+                            <div className="mb-10 inline-flex items-center gap-3 border border-amber/30 bg-amber/5 backdrop-blur-sm px-4 py-2">
+                                <span className="w-1.5 h-1.5 bg-amber rounded-full animate-pulse"></span>
+                                <span className="text-[10px] font-manifesto tracking-manifesto text-amber uppercase">Message Officiel — Lancement</span>
                             </div>
                         </Reveal>
 
                         <Reveal delay={0.2}>
-                            <h1 className="text-7xl md:text-9xl text-cream font-serif leading-[0.85] tracking-tightest mb-8">
-                                L'ORDRE <br/>
-                                <span className="font-light italic opacity-80 text-6xl md:text-8xl">Moodigital</span>
+                            <h1 className="text-8xl md:text-[10rem] text-cream font-serif leading-[0.8] tracking-tightest mb-6">
+                                L'ORDRE
                             </h1>
-                        </Reveal>
-
-                        <Reveal delay={0.4}>
-                            <div className="h-px w-full max-w-[200px] bg-metal/30 my-8"></div>
-                            <p className="text-lg md:text-xl text-lilac font-sans font-light leading-relaxed max-w-2xl mx-auto">
-                                Une Maison de stratégie et d’incarnation business pour les entrepreneures souveraines.
-                                <br/><br/>
-                                <span className="text-cream font-medium">Ni agence. Ni coaching. Un Ordre.</span>
+                            <p className="text-4xl md:text-6xl font-light italic text-lilac/50 font-serif mb-12">
+                                Moodigital
                             </p>
                         </Reveal>
 
+                        <Reveal delay={0.4}>
+                            <div className="flex flex-col items-center max-w-xl mx-auto space-y-6">
+                                <p className="text-sm md:text-base text-lilac font-sans font-light leading-relaxed tracking-wide">
+                                    Une Maison de stratégie et d’incarnation business <br/>
+                                    pour les entrepreneures souveraines.
+                                </p>
+                                <div className="h-px w-12 bg-amber/50"></div>
+                                <p className="text-cream text-lg font-serif italic">
+                                    "Ni agence. Ni coaching. Un Ordre."
+                                </p>
+                            </div>
+                        </Reveal>
+
                         <Reveal delay={0.6}>
-                            <div className="flex flex-col md:flex-row gap-6 mt-16 w-full md:w-auto">
+                            <div className="mt-16">
                                 <Button>Entrer dans l'Ordre</Button>
-                                <Button variant="outline">Lire le manifeste</Button>
                             </div>
                         </Reveal>
                     </div>
-
-                    {/* Bottom Fade */}
-                    <div className="absolute bottom-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20"></div>
                 </section>
             );
         };
 
-        // MANIFESTO (BLACK BLOCK)
         const Manifesto = () => {
             return (
-                <section id="manifeste" className="py-32 bg-black relative">
-                     {/* Damier Pattern (Punctual) */}
-                     <div className="absolute top-0 right-0 w-32 h-32 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjAuNSI+PHBhdGggZD0iTTAgMGgyMHYyMEgwVjB6Ii8+PC9zdmc+')]"></div>
+                <section id="manifeste" className="py-40 bg-black relative">
+                     <div className="absolute top-0 right-0 w-64 h-64 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjAuNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgwVjB6Ii8+PC9zdmc+')]"></div>
 
-                    <div className="max-w-4xl mx-auto px-6">
-                        <div className="border-l-2 border-amber pl-8 md:pl-12 py-2">
+                    <div className="max-w-4xl mx-auto px-6 relative z-10">
+                        <div className="border-l border-amber/60 pl-8 md:pl-16 py-4">
                             <Reveal>
-                                <h3 className="text-4xl md:text-5xl font-serif text-cream leading-[1.1] mb-10 tracking-tightest">
-                                    "Moodigital évolue. <br/>
+                                <h3 className="text-4xl md:text-6xl font-serif text-cream leading-[1.1] mb-12 tracking-tightest">
+                                    Moodigital évolue. <br/>
                                     Pas pour devenir plus gros. <br/>
-                                    <span className="text-amber italic">Mais pour devenir plus juste.</span>"
+                                    <span className="text-amber italic">Mais pour devenir plus juste.</span>
                                 </h3>
                             </Reveal>
                             
                             <Reveal delay={0.2}>
-                                <div className="space-y-8 text-lilac text-lg md:text-xl font-light leading-[1.6] font-sans">
+                                <div className="space-y-8 text-lilac text-lg md:text-xl font-light leading-[1.7] font-sans max-w-2xl">
+                                    <p>
+                                        Depuis plusieurs mois, je sens que ce que je fais ne peut plus être résumé à “communication”, “stratégie” ou “accompagnement business”.
+                                    </p>
                                     <p>
                                         Ce que je fais aujourd’hui, c’est accompagner des femmes à reprendre leur place, à incarner leur business, et à déployer sans se trahir.
                                     </p>
-                                    <p className="text-cream font-medium">
-                                        Alors Moodigital devient un Ordre. Un cadre.
-                                    </p>
+                                    <div className="py-4">
+                                        <p className="text-cream font-serif text-2xl italic">
+                                            Alors Moodigital devient un Ordre. Un cadre.
+                                        </p>
+                                    </div>
                                     <p>
                                         Un espace de discernement, de stratégie et de transformation incarnée. Il n’y a rien à rejoindre. Rien à consommer. Seulement des portes, selon ton moment.
                                     </p>
@@ -369,63 +347,81 @@
             );
         };
 
-        // THE DOORS (FOREST BLOCK)
-        const DoorCard = ({ number, title, subtitle, description, delay }) => (
+        const DoorCard = ({ number, title, subtitle, description, list, cta, delay }) => (
             <Reveal delay={delay}>
-                <div className="group relative border border-white/10 bg-black/20 p-10 h-full hover:border-amber transition-all duration-500 flex flex-col">
-                    <div className="absolute top-6 right-6 opacity-30 group-hover:opacity-100 transition-opacity text-amber">
-                        <Star8 className="w-5 h-5" />
-                    </div>
-                    
-                    <span className="font-manifesto text-6xl text-forest/40 group-hover:text-amber/20 transition-colors mb-6 block">{number}</span>
-                    
-                    <h3 className="text-3xl font-serif text-cream mb-2 tracking-tight">{title}</h3>
-                    <p className="font-manifesto text-xs tracking-[0.2em] text-amber uppercase mb-8">{subtitle}</p>
-                    
-                    <div className="h-px w-full bg-white/10 mb-8 group-hover:bg-amber/50 transition-colors"></div>
-                    
-                    <p className="text-lilac/80 font-sans font-light leading-relaxed mb-8 flex-grow">
-                        {description}
-                    </p>
+                <div className="group relative border border-fine bg-black/40 p-12 h-full hover:border-amber transition-all duration-700 flex flex-col justify-between">
+                    <div>
+                        <div className="flex justify-between items-start mb-12">
+                            <span className="font-manifesto text-6xl text-forest/20 group-hover:text-amber/20 transition-colors">{number}</span>
+                            <Star8 className="w-5 h-5 text-lilac/20 group-hover:text-amber transition-colors" />
+                        </div>
+                        
+                        <h3 className="text-4xl font-serif text-cream mb-3 tracking-tight">{title}</h3>
+                        <p className="font-manifesto text-[10px] tracking-manifesto text-amber uppercase mb-8">{subtitle}</p>
+                        
+                        <div className="h-px w-12 bg-white/20 mb-8 group-hover:w-full group-hover:bg-amber/50 transition-all duration-700"></div>
+                        
+                        <p className="text-lilac/80 font-sans font-light leading-relaxed mb-8">
+                            {description}
+                        </p>
 
-                    <span className="text-xs uppercase tracking-widest text-white/40 group-hover:text-amber transition-colors flex items-center gap-2">
-                        Explorer <span className="text-lg">→</span>
-                    </span>
+                        {list && (
+                            <ul className="space-y-2 mb-8">
+                                {list.map(item => (
+                                    <li key={item} className="flex items-center gap-2 text-xs text-lilac/60 font-sans uppercase tracking-wide">
+                                        <span className="w-1 h-1 bg-amber rounded-none"></span> {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    <div className="mt-auto pt-8 border-t border-white/5 group-hover:border-amber/20 transition-colors">
+                        <span className="text-[10px] uppercase tracking-widest text-cream group-hover:text-amber transition-colors flex items-center gap-3">
+                            {cta} <span className="text-lg group-hover:translate-x-2 transition-transform">→</span>
+                        </span>
+                    </div>
                 </div>
             </Reveal>
         );
 
         const TheDoors = () => {
             return (
-                <section id="piliers" className="py-32 bg-forest relative overflow-hidden">
-                    <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay"></div>
+                <section id="piliers" className="py-40 bg-forest relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(0,0,0,0),#111111)] opacity-50"></div>
                     
-                    <div className="relative z-10 max-w-7xl mx-auto px-6">
+                    <div className="relative z-10 max-w-[1400px] mx-auto px-6">
                         <SectionHeader 
                             surtitle="L'Écosystème" 
                             title="Trois Portes. Trois Passages." 
                         />
 
-                        <div className="grid md:grid-cols-3 gap-0 lg:gap-8">
+                        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
                             <DoorCard 
-                                number="01"
-                                title="Origin"
+                                number="I"
+                                title="ORIGIN"
                                 subtitle="S'aligner & Incarner"
                                 description="Pour celles qui sentent qu’un réalignement profond est nécessaire. Reprendre le pouvoir. Créer depuis ta vérité."
+                                list={["Posture", "Identité Business", "Vision"]}
+                                cta="S'aligner"
                                 delay={0}
                             />
                             <DoorCard 
-                                number="02"
-                                title="Partner"
+                                number="II"
+                                title="PARTNER"
                                 subtitle="Structurer & Déléguer"
                                 description="Ton bras droit stratégique. On remplace le flou par un pilotage clair. Pour les entrepreneures prêtes à bâtir."
+                                list={["Vision & Arbitrage", "Exécution ciblée", "Croissance"]}
+                                cta="Se faire épauler"
                                 delay={0.2}
                             />
                             <DoorCard 
-                                number="03"
-                                title="Savoir"
-                                subtitle="Autonomie & Transmission"
-                                description="Formations, carnets business et programmes courts pour entrer dans l'Ordre à ton rythme."
+                                number="III"
+                                title="TRANSMISSIONS"
+                                subtitle="Autonomie & Savoir"
+                                description="Pour avancer en autonomie, à son rythme. Formations, carnets business et programmes courts pour entrer dans l'univers Mood."
+                                list={["Canva Mood", "Carnets Business", "Programmes Courts"]}
+                                cta="Explorer"
                                 delay={0.4}
                             />
                         </div>
@@ -434,24 +430,21 @@
             );
         };
 
-        // PARTNER (EARTH BLOCK - SHARP GRID)
-        const PartnerRow = ({ title, target, result, delay }) => (
+        const PartnerRow = ({ title, sub, target, result, delay }) => (
             <Reveal delay={delay}>
-                <div className="border-t border-white/10 py-12 group hover:bg-black/10 transition-colors">
-                    <div className="grid md:grid-cols-12 gap-8 items-baseline px-4">
-                        <div className="md:col-span-3">
-                            <h4 className="text-3xl font-serif text-cream group-hover:text-amber transition-colors tracking-tight">{title}</h4>
+                <div className="border-t border-white/10 py-16 group hover:bg-white/[0.02] transition-colors">
+                    <div className="grid lg:grid-cols-12 gap-8 px-4">
+                        <div className="lg:col-span-4">
+                            <h4 className="text-4xl font-serif text-cream group-hover:text-amber transition-colors tracking-tight mb-2">{title}</h4>
+                            <p className="text-[10px] font-manifesto text-lilac/40 tracking-manifesto uppercase">{sub}</p>
                         </div>
-                        <div className="md:col-span-4">
-                            <p className="text-[10px] font-manifesto text-lilac/40 mb-3 tracking-[0.2em] uppercase">Pour qui</p>
-                            <p className="text-lilac font-sans font-light leading-relaxed">{target}</p>
+                        <div className="lg:col-span-4">
+                            <p className="text-[10px] font-manifesto text-amber mb-4 tracking-manifesto uppercase">Pour qui</p>
+                            <p className="text-lilac font-sans font-light leading-relaxed max-w-sm">{target}</p>
                         </div>
-                        <div className="md:col-span-4">
-                            <p className="text-[10px] font-manifesto text-lilac/40 mb-3 tracking-[0.2em] uppercase">Résultat</p>
-                            <p className="text-cream font-sans font-light leading-relaxed">{result}</p>
-                        </div>
-                        <div className="md:col-span-1 flex justify-end">
-                             <Star8 className="w-4 h-4 text-white/10 group-hover:text-amber transition-colors" />
+                        <div className="lg:col-span-4">
+                            <p className="text-[10px] font-manifesto text-amber mb-4 tracking-manifesto uppercase">Résultat</p>
+                            <p className="text-cream font-sans font-light leading-relaxed max-w-sm">{result}</p>
                         </div>
                     </div>
                 </div>
@@ -460,50 +453,60 @@
 
         const PartnerDetails = () => {
             return (
-                <section id="partner" className="py-32 bg-earth text-cream relative">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <div className="grid lg:grid-cols-2 gap-16 mb-24">
+                <section id="partner" className="py-40 bg-earth text-cream relative">
+                    <div className="max-w-[1400px] mx-auto px-6">
+                        <div className="grid lg:grid-cols-2 gap-20 mb-32">
                             <div>
-                                <div className="inline-flex items-center gap-2 mb-6 text-amber">
-                                    <Star8 className="w-4 h-4" />
-                                    <span className="font-manifesto text-xs tracking-[0.2em] uppercase">Le Bras Droit</span>
+                                <div className="inline-flex items-center gap-3 mb-8 text-amber">
+                                    <Star8 className="w-3 h-3" />
+                                    <span className="font-manifesto text-[10px] tracking-manifesto uppercase">Le Bras Droit Stratégique</span>
                                 </div>
-                                <h2 className="text-6xl md:text-7xl font-serif tracking-tightest mb-8">Mood Partner</h2>
-                                <p className="text-lg text-lilac font-sans font-light max-w-md leading-relaxed">
+                                <h2 className="text-7xl md:text-8xl font-serif tracking-tightest mb-10 leading-[0.9]">
+                                    Mood <br/> <span className="italic text-lilac/50">Partner</span>
+                                </h2>
+                                <p className="text-xl text-lilac font-sans font-light max-w-md leading-relaxed">
                                     Ici, on ne vend pas du temps. On vend de la vision, de l'arbitrage et de la structure.
-                                    Un pacte sur la durée.
+                                    <br/><br/>
+                                    C'est un pacte sur la durée pour celles qui sont prêtes à lâcher l'opérationnel pour reprendre le pilotage.
                                 </p>
                             </div>
-                            <div className="bg-black/30 p-10 border border-white/5 backdrop-blur-sm self-end">
-                                <h5 className="font-manifesto text-amber mb-4 tracking-widest text-sm uppercase">Règle d'or</h5>
-                                <p className="italic text-cream font-serif text-2xl leading-snug">
+                            <div className="bg-black/20 p-12 border border-white/5 backdrop-blur-sm self-end">
+                                <h5 className="font-manifesto text-amber mb-6 tracking-manifesto text-xs uppercase">Règle d'or</h5>
+                                <p className="italic text-cream font-serif text-3xl leading-tight mb-6">
                                     "La posture précède toujours la stratégie. Ce cadre est là pour te protéger."
+                                </p>
+                                <p className="text-sm font-sans text-lilac/60 uppercase tracking-widest">
+                                    — Engagement minimum requis. Pas de vente à l'heure.
                                 </p>
                             </div>
                         </div>
 
-                        <div className="border-b border-white/10 mb-20">
+                        <div className="border-b border-white/10 mb-24">
                             <PartnerRow 
-                                title="Essential"
-                                target="Solopreneures lancées. Business stable mais désorganisé."
-                                result="Moins de charge mentale. Plus de clarté. Un business qui avance."
+                                title="ESSENTIAL"
+                                sub="Structurer l'essentiel"
+                                target="Solopreneures lancées. Business stable mais désorganisé. Besoin de clarté + soutien régulier."
+                                result="Moins de charge mentale. Plus de clarté. Un business qui avance sans s'éparpiller."
                                 delay={0}
                             />
                             <PartnerRow 
-                                title="Growth"
-                                target="Entrepreneures en croissance. Premières équipes."
-                                result="Croissance maîtrisée. Organisation solide. Énergie préservée."
+                                title="GROWTH"
+                                sub="Structurer pour grandir"
+                                target="Entrepreneures en croissance. Premières équipes ou délégation. Besoin d'arbitrages réguliers."
+                                result="Croissance maîtrisée. Organisation solide. Énergie préservée. Vision & Stratégie mensuelle."
                                 delay={0.1}
                             />
                             <PartnerRow 
-                                title="Expansion"
-                                target="Marques établies. CA solide. Besoin de pilotage global."
-                                result="Sérénité. Expansion alignée. Liberté de temps."
+                                title="EXPANSION"
+                                sub="Piloter à grande échelle"
+                                target="Marques établies. CA solide. Besoin d'un vrai bras droit stratégique pour la vision long terme."
+                                result="Sérénité absolue. Expansion alignée. Liberté de temps. Décisions structurantes."
                                 delay={0.2}
                             />
                         </div>
 
-                        <div className="flex justify-center">
+                        <div className="flex flex-col items-center text-center space-y-8">
+                            <p className="font-serif text-2xl italic text-lilac/80">"Je ne prends pas tout le monde. Je préfère dire non plutôt que mal accompagner."</p>
                             <Button className="w-full md:w-auto min-w-[300px]">Candidater pour Partner</Button>
                         </div>
                     </div>
@@ -511,40 +514,40 @@
             );
         };
 
-        // FOOTER (SOLID, NO ROUNDING)
         const Footer = () => {
             const currentYear = new Date().getFullYear();
 
             return (
-                <footer className="relative bg-black pt-24 pb-12 overflow-hidden border-t border-white/10">
-                    {/* The Phrase-Sceau */}
-                    <div className="absolute top-0 left-0 w-full overflow-hidden opacity-5 py-4 border-b border-white/10">
-                        <div className="whitespace-nowrap font-manifesto text-8xl text-transparent stroke-text uppercase tracking-widest">
+                <footer className="relative bg-black pt-32 pb-12 overflow-hidden border-t border-white/10">
+                    <div className="absolute top-0 left-0 w-full overflow-hidden opacity-[0.03] py-8 border-b border-white/5 pointer-events-none">
+                        <div className="whitespace-nowrap font-manifesto text-9xl text-cream uppercase tracking-widest">
                             Tout ce qui est transmis est destiné à être incarné — 
                         </div>
                     </div>
 
-                    <div className="max-w-7xl mx-auto px-6 relative z-10 mt-12">
-                        <div className="grid md:grid-cols-4 gap-12 lg:gap-20 mb-20">
-                            <div className="md:col-span-2 space-y-8">
-                                <div className="flex items-center gap-3">
-                                    <Star8 className="size-6 text-amber" />
-                                    <span className="font-serif text-3xl text-cream tracking-tight">MOODIGITAL</span>
+                    <div className="max-w-[1400px] mx-auto px-6 relative z-10 mt-20">
+                        <div className="grid md:grid-cols-12 gap-12 lg:gap-20 mb-24">
+                            <div className="md:col-span-5 space-y-10">
+                                <div className="flex items-center gap-4">
+                                    <Star8 className="size-8 text-amber" />
+                                    <span className="font-serif text-4xl text-cream tracking-tight">MOODIGITAL</span>
                                 </div>
-                                <p className="text-lilac/70 font-sans font-light max-w-sm leading-relaxed">
-                                    Dans l’Ordre Moodigital, tout ce qui est transmis est destiné à être incarné.
+                                <p className="text-lilac/60 font-sans font-light max-w-md leading-relaxed text-lg">
+                                    Une Maison de stratégie et d’incarnation business.
+                                    <br/>
+                                    Nous accompagnons les femmes à structurer sans s'éteindre et à déployer sans se perdre.
                                 </p>
                                 <div className="pt-8">
-                                    <p className="font-manifesto text-xs tracking-widest text-amber uppercase mb-2">Contact</p>
-                                    <a href="mailto:contact@moodigital.fr" className="text-cream hover:text-amber transition-colors font-serif text-xl border-b border-white/20 hover:border-amber pb-1">
+                                    <p className="font-manifesto text-[10px] tracking-manifesto text-amber uppercase mb-4">Contact</p>
+                                    <a href="mailto:contact@moodigital.fr" className="text-cream hover:text-amber transition-colors font-serif text-2xl border-b border-white/20 hover:border-amber pb-1">
                                         contact@moodigital.fr
                                     </a>
                                 </div>
                             </div>
 
-                            <div>
-                                <h3 className="text-xs font-manifesto tracking-[0.2em] text-metal uppercase mb-8">Les Portes</h3>
-                                <ul className="space-y-4 text-lilac/70 font-sans text-sm font-light">
+                            <div className="md:col-span-2 md:col-start-7">
+                                <h3 className="text-[10px] font-manifesto tracking-manifesto text-metal uppercase mb-8">Les Portes</h3>
+                                <ul className="space-y-4 text-lilac/60 font-sans text-sm font-light uppercase tracking-wide">
                                     <li><a href="#" className="hover:text-amber transition-colors block py-1">Origin</a></li>
                                     <li><a href="#partner" className="hover:text-amber transition-colors block py-1">Partner</a></li>
                                     <li><a href="#" className="hover:text-amber transition-colors block py-1">Transmissions</a></li>
@@ -552,9 +555,18 @@
                                 </ul>
                             </div>
 
-                            <div>
-                                <h3 className="text-xs font-manifesto tracking-[0.2em] text-metal uppercase mb-8">Légal</h3>
-                                <ul className="space-y-4 text-lilac/70 font-sans text-sm font-light">
+                            <div className="md:col-span-2">
+                                <h3 className="text-[10px] font-manifesto tracking-manifesto text-metal uppercase mb-8">L'Écosystème</h3>
+                                <ul className="space-y-4 text-lilac/60 font-sans text-sm font-light uppercase tracking-wide">
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Canva Mood</a></li>
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Carnets Business</a></li>
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Programmes Courts</a></li>
+                                </ul>
+                            </div>
+
+                            <div className="md:col-span-2">
+                                <h3 className="text-[10px] font-manifesto tracking-manifesto text-metal uppercase mb-8">Légal</h3>
+                                <ul className="space-y-4 text-lilac/60 font-sans text-sm font-light uppercase tracking-wide">
                                     <li><a href="#" className="hover:text-amber transition-colors block py-1">Mentions Légales</a></li>
                                     <li><a href="#" className="hover:text-amber transition-colors block py-1">CGV</a></li>
                                     <li><a href="#" className="hover:text-amber transition-colors block py-1">Confidentialité</a></li>
@@ -562,11 +574,10 @@
                             </div>
                         </div>
 
-                        {/* Bottom Bar */}
-                        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-lilac/30 font-sans uppercase tracking-wider">
+                        <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] text-lilac/30 font-sans uppercase tracking-widest">
                             <p>© {currentYear} L'Ordre Moodigital. Tous droits réservés.</p>
-                            <a href="https://www.lyvora.agency/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-amber transition-colors">
-                                <span className="w-2 h-2 bg-amber rounded-full"></span>
+                            <a href="https://www.lyvora.agency/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-amber transition-colors group">
+                                <span className="w-1.5 h-1.5 bg-amber rounded-none group-hover:scale-125 transition-transform"></span>
                                 Powered by Lyvora
                             </a>
                         </div>
@@ -575,7 +586,6 @@
             );
         };
 
-        // --- MAIN APP ---
         function App() {
             return (
                 <div className="bg-black text-cream min-h-screen selection:bg-amber selection:text-white">
