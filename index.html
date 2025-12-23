@@ -9,7 +9,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -17,50 +17,44 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        // J'ai mis Canela et Manuka en premier. 
-                        // Si le navigateur ne les trouve pas, il utilisera Playfair/Oswald par défaut.
                         sans: ['Inter', 'sans-serif'],
                         serif: ['Canela', 'Playfair Display', 'serif'], 
                         display: ['Manuka', 'Oswald', 'sans-serif'],
                     },
                     colors: {
-                        earth: "#6B3F24",      // Brun Terre
-                        forest: "#1F3A2E",     // Vert Forêt
-                        lilac: "#D8D1DA",      // Lilas / Gris Lavande
-                        amber: "#E07A2F",      // Orange Brûlé (Action)
-                        cream: "#F4F1EC",      // Blanc Cassé
-                        metal: "#B6B6B6",      // Inox
-                        black: "#111111",
+                        earth: "#6B3F24",      // Brun Terre / Cognac - Socle
+                        forest: "#1F3A2E",     // Vert Forêt - Sagesse
+                        lilac: "#D8D1DA",      // Lilas / Gris Lavande - Intuition
+                        amber: "#E07A2F",      // Orange Brûlé - Action / Seuil
+                        cream: "#F4F1EC",      // Blanc Cassé - Respiration
+                        metal: "#B6B6B6",      // Inox - Détail
+                        black: "#111111",      // Structure
                     },
                     backgroundImage: {
-                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.07%22/%3E%3C/svg%3E')",
                         'checker': "linear-gradient(45deg, #1a1a1a 25%, transparent 25%), linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #1a1a1a 75%), linear-gradient(-45deg, transparent 75%, #1a1a1a 75%)",
                     },
-                    borderRadius: {
-                        '4xl': '2rem',
-                        '5xl': '2.5rem',
-                        '6xl': '3rem',
+                    letterSpacing: {
+                        'tightest': '-0.04em',
                     }
                 },
             },
         }
     </script>
     
-<style>
+    <style>
         /* === DÉCLARATION DES POLICES LOCALES === */
+        /* Si les fichiers ne sont pas présents, les fallbacks (Playfair/Oswald) prendront le relais */
         
-        /* 1. MANUKA (Fichier finissant par ...d1) */
         @font-face {
             font-family: 'Manuka';
-            /* On charge d'abord le woff2 (plus léger), puis le woff en secours */
             src: url('./1382df51f3297328e7355d0ecd34b0d1.woff2') format('woff2'),
                  url('./1382df51f3297328e7355d0ecd34b0d1.woff') format('woff');
-            font-weight: 400; /* Ajuste si c'est du Bold */
+            font-weight: 400;
             font-style: normal;
             font-display: swap;
         }
 
-        /* 2. CANELA (L'autre fichier) */
         @font-face {
             font-family: 'Canela';
             src: url('./4a24899e94d8236f671c1090cd9e068c.woff2') format('woff2'),
@@ -82,15 +76,17 @@
             background-color: var(--background);
             color: var(--foreground);
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Titres : Utilise Canela */
+        /* Règle H1/H2 : Canela, tracking serré, autorité */
         h1, h2, h3, h4 {
             font-family: 'Canela', 'Playfair Display', serif; 
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em; /* Tracking -2 to -4 equivalent */
+            line-height: 1.1;
         }
 
-        /* Manifeste / Gros titres : Utilise Manuka */
+        /* Règle Manuka : Accent, signature */
         .font-manifesto {
             font-family: 'Manuka', 'Oswald', sans-serif;
             text-transform: uppercase;
@@ -102,7 +98,7 @@
             scroll-behavior: smooth;
         }
 
-        /* Texture Overlay */
+        /* Texture Overlay (Grain) */
         .texture-overlay {
             position: fixed;
             top: 0;
@@ -111,7 +107,14 @@
             height: 100%;
             pointer-events: none;
             z-index: 9999;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            opacity: 0.6;
+        }
+
+        /* Sélection de texte Ambre */
+        ::selection {
+            background-color: #E07A2F; /* Amber */
+            color: #F4F1EC;
         }
     </style>
 
@@ -135,7 +138,7 @@
             return window.clsx ? window.clsx(inputs) : inputs.filter(Boolean).join(' ');
         }
 
-        // --- CUSTOM ICONS (Native SVG Components) ---
+        // --- CUSTOM ICONS (Symbolique: Étoile à 8 branches) ---
         
         const Star8 = ({ className }) => (
             <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
@@ -144,57 +147,22 @@
         );
 
         const MenuIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" className={className}><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
         );
 
         const XIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 18 12"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" className={className}><path d="M18 6 6 18"/><path d="m6 6 18 12"/></svg>
         );
-
-        const MoonIcon = ({ size = 24, strokeWidth = 2, className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
-                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-            </svg>
-        );
-
-        const SettingsIcon = ({ size = 24, strokeWidth = 2, className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
-                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-                <circle cx="12" cy="12" r="3"/>
-            </svg>
-        );
-
-        const BookOpenIcon = ({ size = 24, strokeWidth = 2, className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-            </svg>
-        );
-
-        // Social Icons for Footer
-        const FacebookIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        );
-        const InstagramIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-        );
-        const YoutubeIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
-        );
-        const LinkedinIcon = ({ className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-        );
-
 
         // --- UI COMPONENTS ---
 
-        // 1. CTA BUTTON (L'Ambre - Le Seuil)
+        // 1. CTA BUTTON (CHARTE: Orange Brûlé, Inter Semi-bold, Rectangulaire)
         const Button = ({ children, variant = "primary", className, ...props }) => {
-            const baseStyle = "inline-flex items-center justify-center px-8 py-3 text-sm font-medium transition-all duration-300 border font-sans tracking-wide cursor-pointer";
+            const baseStyle = "inline-flex items-center justify-center px-8 py-4 text-sm font-semibold tracking-wide transition-all duration-300 border font-sans cursor-pointer uppercase rounded-sm"; // Changed from rounded-full to rounded-sm (sharp)
             const variants = {
-                primary: "bg-amber text-cream border-amber hover:bg-earth hover:border-earth",
-                outline: "bg-transparent text-cream border-cream/20 hover:border-amber hover:text-amber",
-                ghost: "bg-transparent text-cream/60 hover:text-cream border-transparent hover:bg-white/5"
+                primary: "bg-amber text-cream border-amber hover:bg-earth hover:border-earth hover:text-white",
+                outline: "bg-transparent text-cream border-cream/30 hover:border-amber hover:text-amber",
+                ghost: "bg-transparent text-lilac hover:text-amber border-transparent hover:bg-white/5"
             };
             
             return (
@@ -205,222 +173,177 @@
         };
 
         // 2. SECTION HEADER
-        const SectionHeader = ({ surtitle, title, align = "center" }) => (
-            <div className={cn("mb-16 space-y-4", align === "center" ? "text-center" : "text-left")}>
-                <span className="font-manifesto text-amber text-sm tracking-widest">{surtitle}</span>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl text-cream font-serif">{title}</h2>
-                <div className={cn("h-px w-24 bg-metal/30 mt-6", align === "center" ? "mx-auto" : "")}></div>
+        const SectionHeader = ({ surtitle, title, align = "center", light = false }) => (
+            <div className={cn("mb-20 space-y-6", align === "center" ? "text-center" : "text-left")}>
+                <div className={cn("flex items-center gap-3", align === "center" ? "justify-center" : "justify-start")}>
+                     <Star8 className="w-3 h-3 text-amber" />
+                     <span className="font-manifesto text-amber text-sm tracking-[0.2em] uppercase">{surtitle}</span>
+                     <Star8 className="w-3 h-3 text-amber" />
+                </div>
+                <h2 className={cn("text-5xl md:text-6xl lg:text-7xl font-serif tracking-tightest", light ? "text-forest" : "text-cream")}>{title}</h2>
+                <div className={cn("h-px w-32 bg-metal/40 mt-8", align === "center" ? "mx-auto" : "")}></div>
             </div>
         );
 
-        // 3. REVEAL ANIMATION WRAPPER
+        // 3. REVEAL ANIMATION
         const Reveal = ({ children, delay = 0 }) => (
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay, ease: "easeOut" }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }} // Custom easing for "Authority"
             >
                 {children}
             </motion.div>
         );
 
-        // 4. ANIMATED CONTAINER FOR FOOTER
-        const AnimatedContainer = ({ className, delay = 0.1, children }) => {
-            const shouldReduceMotion = useReducedMotion();
-
-            if (shouldReduceMotion) {
-                return <div className={className}>{children}</div>;
-            }
-
-            return (
-                <motion.div
-                    initial={{ filter: 'blur(4px)', translateY: -8, opacity: 0 }}
-                    whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay, duration: 0.8 }}
-                    className={className}
-                >
-                    {children}
-                </motion.div>
-            );
-        };
-
         // --- PAGE SECTIONS ---
 
-        // HEADER / NAV (ADAPTED)
-        const menuItems = [
-            { name: 'Manifeste', href: '#manifeste' },
-            { name: 'Les Portes', href: '#piliers' },
-            { name: 'Partner', href: '#partner' },
-            { name: 'Journal', href: '#' },
-        ];
-
+        // NAV (SHARP & MINIMAL)
         const Navigation = () => {
             const [menuState, setMenuState] = useState(false);
             const [isScrolled, setIsScrolled] = useState(false);
 
             useEffect(() => {
-                const handleScroll = () => {
-                    setIsScrolled(window.scrollY > 50);
-                };
+                const handleScroll = () => setIsScrolled(window.scrollY > 50);
                 window.addEventListener('scroll', handleScroll);
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
 
+            const menuItems = [
+                { name: 'Manifeste', href: '#manifeste' },
+                { name: 'L\'Ordre', href: '#piliers' },
+                { name: 'Partner', href: '#partner' },
+                { name: 'Journal', href: '#' },
+            ];
+
             return (
                 <header>
-                    <nav
-                        data-state={menuState && 'active'}
-                        className="fixed z-50 w-full px-2 pt-4 group"
-                    >
-                        <div
+                    <nav className="fixed z-50 w-full pt-0">
+                        <div 
                             className={cn(
-                                'mx-auto max-w-7xl px-6 transition-all duration-300',
-                                isScrolled
-                                    ? 'bg-black/80 max-w-4xl rounded-full border border-white/10 backdrop-blur-lg lg:px-8 py-3'
-                                    : 'py-6 lg:px-12'
+                                'w-full px-6 md:px-12 transition-all duration-500 border-b',
+                                isScrolled 
+                                    ? 'bg-black/95 backdrop-blur-md border-white/10 py-4' 
+                                    : 'bg-transparent border-transparent py-8'
                             )}
                         >
-                            <div className="relative flex flex-wrap items-center justify-between gap-6">
+                            <div className="flex items-center justify-between max-w-7xl mx-auto">
                                 {/* Logo */}
-                                <div className="flex w-full justify-between lg:w-auto items-center">
-                                    <a
-                                        href="/"
-                                        aria-label="home"
-                                        className="flex items-center space-x-2"
-                                    >
-                                        <Star8 className="w-5 h-5 text-amber" />
-                                        <span className="font-serif text-xl tracking-wide text-cream">MOODIGITAL</span>
-                                    </a>
+                                <a href="/" className="flex items-center space-x-3 group">
+                                    <Star8 className="w-5 h-5 text-amber transition-transform duration-500 group-hover:rotate-45" />
+                                    <span className="font-serif text-2xl tracking-tight text-cream">MOODIGITAL</span>
+                                </a>
 
-                                    {/* Mobile Toggle */}
-                                    <button
-                                        onClick={() => setMenuState(!menuState)}
-                                        aria-label={menuState ? 'Close Menu' : 'Open Menu'}
-                                        className="relative z-50 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden text-cream hover:text-amber transition-colors"
-                                    >
-                                        <div className="relative w-6 h-6">
-                                            <span className={cn("absolute inset-0 transition-all duration-300", menuState ? "opacity-0 rotate-180 scale-0" : "opacity-100 rotate-0 scale-100")}>
-                                                <MenuIcon className="w-6 h-6" />
-                                            </span>
-                                            <span className={cn("absolute inset-0 transition-all duration-300", menuState ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-180 scale-0")}>
-                                                <XIcon className="w-6 h-6" />
-                                            </span>
-                                        </div>
-                                    </button>
-                                </div>
-
-                                {/* Desktop Links */}
-                                <div className="absolute inset-0 m-auto hidden size-fit lg:block">
-                                    <ul className="flex gap-8 text-sm font-manifesto tracking-widest uppercase">
-                                        {menuItems.map((item, index) => (
-                                            <li key={index}>
-                                                <a
-                                                    href={item.href}
-                                                    className="text-lilac/70 hover:text-amber block duration-150 transition-colors"
-                                                >
+                                {/* Desktop Links - Sharp & Clean */}
+                                <div className="hidden lg:flex items-center gap-12">
+                                    <ul className="flex gap-10 text-xs font-manifesto tracking-[0.15em] uppercase">
+                                        {menuItems.map((item) => (
+                                            <li key={item.name}>
+                                                <a href={item.href} className="text-lilac hover:text-amber transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-px after:bg-amber hover:after:w-full after:transition-all after:duration-300">
                                                     {item.name}
                                                 </a>
                                             </li>
                                         ))}
                                     </ul>
+                                    <Button variant="outline" className="px-6 py-2 text-xs h-auto border-white/20 hover:border-amber">
+                                        Candidater
+                                    </Button>
                                 </div>
 
-                                {/* Mobile Menu Overlay & Desktop Right Side */}
-                                <div className={cn(
-                                    "absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl mt-4 flex-col gap-6 lg:static lg:w-auto lg:bg-transparent lg:p-0 lg:border-none lg:shadow-none lg:flex-row lg:items-center lg:mt-0",
-                                    menuState ? "flex" : "hidden lg:flex"
-                                )}>
-                                    
-                                    {/* Mobile Links */}
-                                    <div className="lg:hidden">
-                                        <ul className="space-y-6 text-lg font-serif">
-                                            {menuItems.map((item, index) => (
-                                                <li key={index}>
-                                                    <a
-                                                        href={item.href}
-                                                        onClick={() => setMenuState(false)}
-                                                        className="text-cream hover:text-amber block duration-150"
-                                                    >
-                                                        {item.name}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-
-                                    {/* CTA */}
-                                    <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                        <Button
-                                            variant="primary"
-                                            className={cn("text-xs px-6 py-2 rounded-full w-full md:w-auto", isScrolled ? "h-9" : "")}
-                                        >
-                                            <a href="#orientation">Candidater</a>
-                                        </Button>
-                                    </div>
-                                </div>
+                                {/* Mobile Toggle */}
+                                <button onClick={() => setMenuState(!menuState)} className="lg:hidden text-cream hover:text-amber">
+                                    {menuState ? <XIcon /> : <MenuIcon />}
+                                </button>
                             </div>
                         </div>
+
+                        {/* Mobile Menu Overlay */}
+                        <AnimatePresence>
+                            {menuState && (
+                                <motion.div 
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "100vh" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="fixed inset-0 bg-earth z-40 flex items-center justify-center lg:hidden"
+                                >
+                                    <ul className="flex flex-col items-center gap-8 text-center">
+                                        {menuItems.map((item) => (
+                                            <li key={item.name}>
+                                                <a href={item.href} onClick={() => setMenuState(false)} className="font-serif text-4xl text-cream hover:text-amber hover:italic transition-all">
+                                                    {item.name}
+                                                </a>
+                                            </li>
+                                        ))}
+                                        <div className="mt-8">
+                                            <Button onClick={() => setMenuState(false)}>Entrer dans l'Ordre</Button>
+                                        </div>
+                                    </ul>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </nav>
                 </header>
             );
         };
 
-        // HERO SECTION
+        // HERO (EARTH BASE)
         const Hero = () => {
             return (
-                <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-earth pt-20">
+                <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-earth">
                     {/* Background Texture & Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-earth/90 to-black z-10"></div>
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center opacity-30 grayscale mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-earth/80 to-black z-10"></div>
+                    {/* Image Placeholder with grayscale overlay */}
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-multiply filter grayscale contrast-125"></div>
                     
-                    {/* Content */}
-                    <div className="relative z-20 text-center max-w-5xl px-6 space-y-8 mt-20">
+                    <div className="relative z-20 text-center max-w-6xl px-6 flex flex-col items-center pt-20">
                         <Reveal>
-                            <div className="inline-flex items-center gap-3 border border-white/10 px-4 py-1 rounded-full bg-white/5 backdrop-blur-sm mb-6">
-                                <span className="w-2 h-2 rounded-full bg-amber animate-pulse"></span>
-                                <span className="text-xs font-manifesto tracking-widest text-cream/80">Message Officiel — Lancement</span>
+                            <div className="mb-8 inline-flex items-center gap-4 border-b border-amber/50 pb-2">
+                                <span className="text-xs font-manifesto tracking-[0.25em] text-amber uppercase">Message Officiel</span>
                             </div>
                         </Reveal>
 
                         <Reveal delay={0.2}>
-                            <h1 className="text-6xl md:text-8xl lg:text-9xl text-cream font-serif leading-[0.9]">
-                                L'Ordre <br/>
-                                <span className="italic text-cream/90">Moodigital</span>
+                            <h1 className="text-7xl md:text-9xl text-cream font-serif leading-[0.85] tracking-tightest mb-8">
+                                L'ORDRE <br/>
+                                <span className="font-light italic opacity-80 text-6xl md:text-8xl">Moodigital</span>
                             </h1>
                         </Reveal>
 
                         <Reveal delay={0.4}>
-                            <p className="text-lg md:text-xl text-lilac/80 max-w-2xl mx-auto font-light leading-relaxed mt-6">
+                            <div className="h-px w-full max-w-[200px] bg-metal/30 my-8"></div>
+                            <p className="text-lg md:text-xl text-lilac font-sans font-light leading-relaxed max-w-2xl mx-auto">
                                 Une Maison de stratégie et d’incarnation business pour les entrepreneures souveraines.
-                                <br/>
-                                <span className="text-amber">Ni agence. Ni coaching. Un Ordre.</span>
+                                <br/><br/>
+                                <span className="text-cream font-medium">Ni agence. Ni coaching. Un Ordre.</span>
                             </p>
                         </Reveal>
 
                         <Reveal delay={0.6}>
-                            <div className="flex flex-col md:flex-row gap-6 justify-center mt-12">
+                            <div className="flex flex-col md:flex-row gap-6 mt-16 w-full md:w-auto">
                                 <Button>Entrer dans l'Ordre</Button>
-                                <Button variant="ghost">Lire le manifeste</Button>
+                                <Button variant="outline">Lire le manifeste</Button>
                             </div>
                         </Reveal>
                     </div>
 
-                    {/* Bottom Gradient Fade */}
-                    <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-20"></div>
+                    {/* Bottom Fade */}
+                    <div className="absolute bottom-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20"></div>
                 </section>
             );
         };
 
-        // MANIFESTO SECTION
+        // MANIFESTO (BLACK BLOCK)
         const Manifesto = () => {
             return (
                 <section id="manifeste" className="py-32 bg-black relative">
+                     {/* Damier Pattern (Punctual) */}
+                     <div className="absolute top-0 right-0 w-32 h-32 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjAuNSI+PHBhdGggZD0iTTAgMGgyMHYyMEgwVjB6Ii8+PC9zdmc+')]"></div>
+
                     <div className="max-w-4xl mx-auto px-6">
-                        <div className="border-l border-amber/30 pl-8 md:pl-16 py-4">
+                        <div className="border-l-2 border-amber pl-8 md:pl-12 py-2">
                             <Reveal>
-                                <h3 className="text-3xl md:text-4xl font-serif text-cream leading-snug mb-8">
+                                <h3 className="text-4xl md:text-5xl font-serif text-cream leading-[1.1] mb-10 tracking-tightest">
                                     "Moodigital évolue. <br/>
                                     Pas pour devenir plus gros. <br/>
                                     <span className="text-amber italic">Mais pour devenir plus juste.</span>"
@@ -428,10 +351,7 @@
                             </Reveal>
                             
                             <Reveal delay={0.2}>
-                                <div className="space-y-6 text-lilac/90 text-lg font-light leading-relaxed">
-                                    <p>
-                                        Depuis plusieurs mois, je sens que ce que je fais ne peut plus être résumé à "communication", "stratégie" ou "accompagnement business".
-                                    </p>
+                                <div className="space-y-8 text-lilac text-lg md:text-xl font-light leading-[1.6] font-sans">
                                     <p>
                                         Ce que je fais aujourd’hui, c’est accompagner des femmes à reprendre leur place, à incarner leur business, et à déployer sans se trahir.
                                     </p>
@@ -444,32 +364,33 @@
                                 </div>
                             </Reveal>
                         </div>
-
-                        {/* Checkerboard Pattern Strip */}
-                        <div className="w-full h-12 mt-20 opacity-20" 
-                             style={{backgroundImage: 'linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%)', backgroundSize: '20px 20px'}}>
-                        </div>
                     </div>
                 </section>
             );
         };
 
-        // THE 3 DOORS (OFFERS)
-        const DoorCard = ({ title, subtitle, description, icon: Icon, delay }) => (
+        // THE DOORS (FOREST BLOCK)
+        const DoorCard = ({ number, title, subtitle, description, delay }) => (
             <Reveal delay={delay}>
-                <div className="group relative border border-white/10 bg-white/5 p-8 md:p-12 h-full hover:border-amber/50 transition-all duration-500 hover:bg-white/[0.07]">
-                    <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition-opacity text-amber">
-                        <Star8 className="w-6 h-6" />
+                <div className="group relative border border-white/10 bg-black/20 p-10 h-full hover:border-amber transition-all duration-500 flex flex-col">
+                    <div className="absolute top-6 right-6 opacity-30 group-hover:opacity-100 transition-opacity text-amber">
+                        <Star8 className="w-5 h-5" />
                     </div>
-                    <div className="mb-8 text-amber">
-                        <Icon size={32} strokeWidth={1} />
-                    </div>
-                    <h3 className="text-2xl font-serif text-cream mb-2">{title}</h3>
-                    <p className="font-manifesto text-xs tracking-widest text-lilac/60 mb-6">{subtitle}</p>
-                    <div className="h-px w-12 bg-white/20 mb-6 group-hover:w-full transition-all duration-700 ease-out"></div>
-                    <p className="text-lilac/80 font-light leading-relaxed">
+                    
+                    <span className="font-manifesto text-6xl text-forest/40 group-hover:text-amber/20 transition-colors mb-6 block">{number}</span>
+                    
+                    <h3 className="text-3xl font-serif text-cream mb-2 tracking-tight">{title}</h3>
+                    <p className="font-manifesto text-xs tracking-[0.2em] text-amber uppercase mb-8">{subtitle}</p>
+                    
+                    <div className="h-px w-full bg-white/10 mb-8 group-hover:bg-amber/50 transition-colors"></div>
+                    
+                    <p className="text-lilac/80 font-sans font-light leading-relaxed mb-8 flex-grow">
                         {description}
                     </p>
+
+                    <span className="text-xs uppercase tracking-widest text-white/40 group-hover:text-amber transition-colors flex items-center gap-2">
+                        Explorer <span className="text-lg">→</span>
+                    </span>
                 </div>
             </Reveal>
         );
@@ -477,8 +398,7 @@
         const TheDoors = () => {
             return (
                 <section id="piliers" className="py-32 bg-forest relative overflow-hidden">
-                    {/* Background elements */}
-                    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-black/40 via-forest to-black/80"></div>
+                    <div className="absolute inset-0 bg-noise opacity-10 mix-blend-overlay"></div>
                     
                     <div className="relative z-10 max-w-7xl mx-auto px-6">
                         <SectionHeader 
@@ -486,26 +406,26 @@
                             title="Trois Portes. Trois Passages." 
                         />
 
-                        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+                        <div className="grid md:grid-cols-3 gap-0 lg:gap-8">
                             <DoorCard 
-                                title="ORIGIN"
-                                subtitle="S'ALIGNER & INCARNER"
-                                description="Pour celles qui sentent qu’un réalignement profond est nécessaire. Reprendre le pouvoir. Créer depuis ta vérité. Un espace de guidance stratégique et intuitive."
-                                icon={MoonIcon}
+                                number="01"
+                                title="Origin"
+                                subtitle="S'aligner & Incarner"
+                                description="Pour celles qui sentent qu’un réalignement profond est nécessaire. Reprendre le pouvoir. Créer depuis ta vérité."
                                 delay={0}
                             />
                             <DoorCard 
-                                title="PARTNER"
-                                subtitle="STRUCTURER & DÉLÉGUER"
-                                description="Ton bras droit stratégique. Pour celles qui veulent structurer et déléguer avec justesse. On remplace toutes les anciennes prestations floues par un pilotage clair."
-                                icon={SettingsIcon}
+                                number="02"
+                                title="Partner"
+                                subtitle="Structurer & Déléguer"
+                                description="Ton bras droit stratégique. On remplace le flou par un pilotage clair. Pour les entrepreneures prêtes à bâtir."
                                 delay={0.2}
                             />
                             <DoorCard 
-                                title="TRANSMISSIONS"
-                                subtitle="AUTONOMIE & SAVOIR"
-                                description="Pour avancer en autonomie, à son rythme. Formations, carnets business et programmes courts pour entrer dans l'univers Mood."
-                                icon={BookOpenIcon}
+                                number="03"
+                                title="Savoir"
+                                subtitle="Autonomie & Transmission"
+                                description="Formations, carnets business et programmes courts pour entrer dans l'Ordre à ton rythme."
                                 delay={0.4}
                             />
                         </div>
@@ -514,21 +434,24 @@
             );
         };
 
-        // PARTNER DEEP DIVE
+        // PARTNER (EARTH BLOCK - SHARP GRID)
         const PartnerRow = ({ title, target, result, delay }) => (
             <Reveal delay={delay}>
-                <div className="border-b border-white/10 py-10 hover:bg-white/[0.02] transition-colors group px-4">
-                    <div className="grid md:grid-cols-12 gap-6 items-start">
-                        <div className="md:col-span-4">
-                            <h4 className="text-2xl font-serif text-cream group-hover:text-amber transition-colors">{title}</h4>
+                <div className="border-t border-white/10 py-12 group hover:bg-black/10 transition-colors">
+                    <div className="grid md:grid-cols-12 gap-8 items-baseline px-4">
+                        <div className="md:col-span-3">
+                            <h4 className="text-3xl font-serif text-cream group-hover:text-amber transition-colors tracking-tight">{title}</h4>
                         </div>
                         <div className="md:col-span-4">
-                            <p className="text-xs font-manifesto text-lilac/50 mb-2 tracking-widest">POUR QUI</p>
-                            <p className="text-lilac/90 font-light">{target}</p>
+                            <p className="text-[10px] font-manifesto text-lilac/40 mb-3 tracking-[0.2em] uppercase">Pour qui</p>
+                            <p className="text-lilac font-sans font-light leading-relaxed">{target}</p>
                         </div>
                         <div className="md:col-span-4">
-                            <p className="text-xs font-manifesto text-lilac/50 mb-2 tracking-widest">RÉSULTAT</p>
-                            <p className="text-lilac/90 font-light">{result}</p>
+                            <p className="text-[10px] font-manifesto text-lilac/40 mb-3 tracking-[0.2em] uppercase">Résultat</p>
+                            <p className="text-cream font-sans font-light leading-relaxed">{result}</p>
+                        </div>
+                        <div className="md:col-span-1 flex justify-end">
+                             <Star8 className="w-4 h-4 text-white/10 group-hover:text-amber transition-colors" />
                         </div>
                     </div>
                 </div>
@@ -537,163 +460,115 @@
 
         const PartnerDetails = () => {
             return (
-                <section id="partner" className="py-32 bg-earth text-cream">
-                    <div className="max-w-6xl mx-auto px-6">
-                        <div className="grid lg:grid-cols-2 gap-16 mb-20">
+                <section id="partner" className="py-32 bg-earth text-cream relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="grid lg:grid-cols-2 gap-16 mb-24">
                             <div>
-                                <SectionHeader align="left" surtitle="Le Bras Droit" title="Mood Partner" />
-                                <p className="text-lg text-lilac/90 font-light max-w-md">
+                                <div className="inline-flex items-center gap-2 mb-6 text-amber">
+                                    <Star8 className="w-4 h-4" />
+                                    <span className="font-manifesto text-xs tracking-[0.2em] uppercase">Le Bras Droit</span>
+                                </div>
+                                <h2 className="text-6xl md:text-7xl font-serif tracking-tightest mb-8">Mood Partner</h2>
+                                <p className="text-lg text-lilac font-sans font-light max-w-md leading-relaxed">
                                     Ici, on ne vend pas du temps. On vend de la vision, de l'arbitrage et de la structure.
-                                    Un pacte sur la durée pour celles qui sont prêtes.
+                                    Un pacte sur la durée.
                                 </p>
                             </div>
-                            <div className="bg-black/20 p-8 border border-white/5 backdrop-blur-sm self-end">
-                                <h5 className="font-manifesto text-amber mb-4">Règle d'or</h5>
-                                <p className="italic text-cream/80 font-serif text-xl">
+                            <div className="bg-black/30 p-10 border border-white/5 backdrop-blur-sm self-end">
+                                <h5 className="font-manifesto text-amber mb-4 tracking-widest text-sm uppercase">Règle d'or</h5>
+                                <p className="italic text-cream font-serif text-2xl leading-snug">
                                     "La posture précède toujours la stratégie. Ce cadre est là pour te protéger."
                                 </p>
                             </div>
                         </div>
 
-                        <div className="border-t border-white/10">
+                        <div className="border-b border-white/10 mb-20">
                             <PartnerRow 
-                                title="ESSENTIAL"
+                                title="Essential"
                                 target="Solopreneures lancées. Business stable mais désorganisé."
                                 result="Moins de charge mentale. Plus de clarté. Un business qui avance."
                                 delay={0}
                             />
                             <PartnerRow 
-                                title="GROWTH"
+                                title="Growth"
                                 target="Entrepreneures en croissance. Premières équipes."
                                 result="Croissance maîtrisée. Organisation solide. Énergie préservée."
                                 delay={0.1}
                             />
                             <PartnerRow 
-                                title="EXPANSION"
+                                title="Expansion"
                                 target="Marques établies. CA solide. Besoin de pilotage global."
                                 result="Sérénité. Expansion alignée. Liberté de temps."
                                 delay={0.2}
                             />
                         </div>
 
-                        <div className="mt-20 text-center">
-                            <p className="mb-8 font-light text-lilac">Engagement minimum requis. Pas de vente à l'heure.</p>
-                            <Button>Candidater pour Partner</Button>
+                        <div className="flex justify-center">
+                            <Button className="w-full md:w-auto min-w-[300px]">Candidater pour Partner</Button>
                         </div>
                     </div>
                 </section>
             );
         };
 
-        // FOOTER
-        const footerLinks = [
-            {
-                label: 'L\'Ordre',
-                links: [
-                    { title: 'Manifeste', href: '#manifeste' },
-                    { title: 'Philosophie', href: '#' },
-                    { title: 'L\'Équipe', href: '#' },
-                    { title: 'Contact', href: '#' },
-                ],
-            },
-            {
-                label: 'Les Portes',
-                links: [
-                    { title: 'Origin', href: '#' },
-                    { title: 'Partner', href: '#partner' },
-                    { title: 'Transmissions', href: '#' },
-                    { title: 'Le Journal', href: '#' },
-                ],
-            },
-            {
-                label: 'Ressources & Légal',
-                links: [
-                    { title: 'Mentions Légales', href: '#' },
-                    { title: 'CGV', href: '#' },
-                    { title: 'Confidentialité', href: '#' },
-                    { title: 'Support', href: '#' },
-                ],
-            },
-        ];
-
+        // FOOTER (SOLID, NO ROUNDING)
         const Footer = () => {
             const currentYear = new Date().getFullYear();
 
             return (
-                <footer className="md:rounded-t-6xl relative w-full max-w-7xl mx-auto flex flex-col items-center justify-center rounded-t-4xl border-t border-white/5 bg-black px-6 py-12 lg:py-16 overflow-hidden mt-12">
-                    {/* The Gradient Effect adapted to Earth/Amber tones */}
-                    <div className="absolute inset-0 bg-[radial-gradient(35%_128px_at_50%_0%,theme(colors.earth),transparent)] opacity-40"></div>
-                    
-                    {/* The Blur Line */}
-                    <div className="bg-amber/30 absolute top-0 right-1/2 left-1/2 h-px w-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[2px]" />
+                <footer className="relative bg-black pt-24 pb-12 overflow-hidden border-t border-white/10">
+                    {/* The Phrase-Sceau */}
+                    <div className="absolute top-0 left-0 w-full overflow-hidden opacity-5 py-4 border-b border-white/10">
+                        <div className="whitespace-nowrap font-manifesto text-8xl text-transparent stroke-text uppercase tracking-widest">
+                            Tout ce qui est transmis est destiné à être incarné — 
+                        </div>
+                    </div>
 
-                    <div className="grid w-full gap-8 xl:grid-cols-3 xl:gap-8 relative z-10">
-                        {/* Brand Column */}
-                        <AnimatedContainer className="space-y-4">
-                            <div className="flex items-center gap-2">
-                                <Star8 className="size-8 text-amber" />
-                                <span className="font-serif text-2xl text-cream tracking-wide">MOODIGITAL</span>
-                            </div>
-                            <p className="text-lilac/60 mt-8 text-sm md:mt-0 font-light max-w-xs leading-relaxed">
-                                Une Maison de stratégie et d’incarnation business.
-                                <br />
-                                "Tout ce qui est transmis ici est destiné à être incarné."
-                            </p>
-                            <p className="text-lilac/40 text-xs mt-4">
-                                © {currentYear} L'Ordre Moodigital. Tous droits réservés.
-                            </p>
-                        </AnimatedContainer>
-
-                        {/* Links Columns */}
-                        <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3 xl:col-span-2 xl:mt-0">
-                            {footerLinks.map((section, index) => (
-                                <AnimatedContainer key={section.label} delay={0.1 + index * 0.1}>
-                                    <div className="mb-10 md:mb-0">
-                                        <h3 className="text-xs font-manifesto tracking-widest text-amber uppercase mb-6">{section.label}</h3>
-                                        <ul className="text-lilac/70 space-y-3 text-sm font-light">
-                                            {section.links.map((link) => (
-                                                <li key={link.title}>
-                                                    <a
-                                                        href={link.href}
-                                                        className="hover:text-cream hover:translate-x-1 inline-flex items-center transition-all duration-300"
-                                                    >
-                                                        {link.title}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </AnimatedContainer>
-                            ))}
-                            
-                            {/* Socials Column (Merged into the grid for layout) */}
-                            <AnimatedContainer delay={0.4}>
-                                <div className="mb-10 md:mb-0">
-                                    <h3 className="text-xs font-manifesto tracking-widest text-amber uppercase mb-6">Réseaux</h3>
-                                    <ul className="text-lilac/70 space-y-3 text-sm font-light">
-                                         <li>
-                                            <a href="#" className="hover:text-cream inline-flex items-center gap-2 transition-all duration-300 group">
-                                                <InstagramIcon className="size-4 group-hover:text-amber transition-colors" /> Instagram
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" className="hover:text-cream inline-flex items-center gap-2 transition-all duration-300 group">
-                                                <LinkedinIcon className="size-4 group-hover:text-amber transition-colors" /> LinkedIn
-                                            </a>
-                                        </li>
-                                         <li>
-                                            <a href="#" className="hover:text-cream inline-flex items-center gap-2 transition-all duration-300 group">
-                                                <YoutubeIcon className="size-4 group-hover:text-amber transition-colors" /> YouTube
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" className="hover:text-cream inline-flex items-center gap-2 transition-all duration-300 group">
-                                                <FacebookIcon className="size-4 group-hover:text-amber transition-colors" /> Facebook
-                                            </a>
-                                        </li>
-                                    </ul>
+                    <div className="max-w-7xl mx-auto px-6 relative z-10 mt-12">
+                        <div className="grid md:grid-cols-4 gap-12 lg:gap-20 mb-20">
+                            <div className="md:col-span-2 space-y-8">
+                                <div className="flex items-center gap-3">
+                                    <Star8 className="size-6 text-amber" />
+                                    <span className="font-serif text-3xl text-cream tracking-tight">MOODIGITAL</span>
                                 </div>
-                            </AnimatedContainer>
+                                <p className="text-lilac/70 font-sans font-light max-w-sm leading-relaxed">
+                                    Dans l’Ordre Moodigital, tout ce qui est transmis est destiné à être incarné.
+                                </p>
+                                <div className="pt-8">
+                                    <p className="font-manifesto text-xs tracking-widest text-amber uppercase mb-2">Contact</p>
+                                    <a href="mailto:contact@moodigital.fr" className="text-cream hover:text-amber transition-colors font-serif text-xl border-b border-white/20 hover:border-amber pb-1">
+                                        contact@moodigital.fr
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 className="text-xs font-manifesto tracking-[0.2em] text-metal uppercase mb-8">Les Portes</h3>
+                                <ul className="space-y-4 text-lilac/70 font-sans text-sm font-light">
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Origin</a></li>
+                                    <li><a href="#partner" className="hover:text-amber transition-colors block py-1">Partner</a></li>
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Transmissions</a></li>
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Le Journal</a></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 className="text-xs font-manifesto tracking-[0.2em] text-metal uppercase mb-8">Légal</h3>
+                                <ul className="space-y-4 text-lilac/70 font-sans text-sm font-light">
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Mentions Légales</a></li>
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">CGV</a></li>
+                                    <li><a href="#" className="hover:text-amber transition-colors block py-1">Confidentialité</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Bottom Bar */}
+                        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-lilac/30 font-sans uppercase tracking-wider">
+                            <p>© {currentYear} L'Ordre Moodigital. Tous droits réservés.</p>
+                            <a href="https://www.lyvora.agency/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-amber transition-colors">
+                                <span className="w-2 h-2 bg-amber rounded-full"></span>
+                                Powered by Lyvora
+                            </a>
                         </div>
                     </div>
                 </footer>
@@ -703,7 +578,7 @@
         // --- MAIN APP ---
         function App() {
             return (
-                <div className="bg-black text-cream min-h-screen selection:bg-amber selection:text-black">
+                <div className="bg-black text-cream min-h-screen selection:bg-amber selection:text-white">
                     <Navigation />
                     <Hero />
                     <Manifesto />
